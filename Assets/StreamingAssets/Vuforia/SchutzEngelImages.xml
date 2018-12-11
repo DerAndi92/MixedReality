@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
   <Tracking>
+    <ImageTarget name="img_5518" size="25.000000 35.541668" />
+    <ImageTarget name="target_polizei" size="50.000000 47.727272" />
     <ImageTarget name="testCity200" size="200.000000 150.000000" />
     <ImageTarget name="city50" size="50.000000 42.200001" />
     <ImageTarget name="city250" size="250.000000 211.000000" />
