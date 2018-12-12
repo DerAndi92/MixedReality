@@ -17,13 +17,18 @@ public class Waypoints : MonoBehaviour
     public float speed;
     public float waypointRadius;
     public string collisionGroup;
-    
 
+    private float acutalSpeed;
     private bool isBackward;
     private bool collision = false;
     private int current = 0;
     private List<Collider> collissions = new List<Collider>();
-    
+
+    private void Start()
+    {
+        acutalSpeed = speed;
+    }
+
     void Update()
     {
         // Should it move?
@@ -34,7 +39,7 @@ public class Waypoints : MonoBehaviour
             if (!collision)
             {
                 // Move each frame
-                transform.position = Vector3.MoveTowards(transform.position, waypoints[current].transform.position, Time.deltaTime * speed);
+                transform.position = Vector3.MoveTowards(transform.position, waypoints[current].transform.position, Time.deltaTime * acutalSpeed);
                 if (Vector3.Distance(waypoints[current].transform.position, transform.position) < waypointRadius)
                 {
 
@@ -100,7 +105,7 @@ public class Waypoints : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Only detect a collision if the collisionGroup of the Collider ist in the collisionOn array
-        if (collisionOn.Contains(other.gameObject.GetComponent<Waypoints>().collisionGroup))
+        if (other.gameObject.GetComponent<Waypoints>() && collisionOn.Contains(other.gameObject.GetComponent<Waypoints>().collisionGroup))
         {
             // Only detect a collision on the front side of the collider
             Vector3 direction = other.transform.position - transform.position;
@@ -108,6 +113,9 @@ public class Waypoints : MonoBehaviour
             {
                 collision = true;
                 collissions.Add(other);
+
+                // Reset Speed to default
+                this.resetActualSpeed();
             }
         }
             
@@ -121,5 +129,15 @@ public class Waypoints : MonoBehaviour
         }
         
         if(collissions.Count() == 0) collision = false;
+    }
+
+    public void setActualSpeed(float speed)
+    {
+        this.acutalSpeed = speed;
+    }
+
+    public void resetActualSpeed()
+    {
+        this.acutalSpeed = speed;
     }
 }
