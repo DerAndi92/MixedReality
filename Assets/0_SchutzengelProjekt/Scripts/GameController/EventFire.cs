@@ -21,13 +21,18 @@ public class EventFire : MonoBehaviour {
     }
 
     void gameEventUpdated() {
-        if(GameController.Instance.eventFire) {
-            if (!GameController.Instance.isFire) {
-                Debug.Log("YEAAAAAH FIREEEE");
+        if (GameController.Instance.eventFire)
+        {
+            if (!GameController.Instance.isFire)
+            {
                 GameController.Instance.isFire = true;
                 fireTimeline.Play();
 
-            } 
+                if (GameController.Instance.fireCareOnEvent)
+                {
+                    fireTimeline.Stop();
+                }
+            }
         }
     }
 

@@ -16,6 +16,8 @@ public class GameController : MonoBehaviour {
     public bool eventCarCrash = false;
     public bool isCarCrash = false;
 
+    public bool fireCareOnEvent = false;
+
 
     private static GameController instance;
 
