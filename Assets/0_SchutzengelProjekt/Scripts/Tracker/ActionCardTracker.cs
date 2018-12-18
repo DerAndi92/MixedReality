@@ -7,12 +7,9 @@ public class ActionCardTracker : MonoBehaviour, ITrackableEventHandler
 {
 
     private TrackableBehaviour mTrackableBehaviour;
-    private PlayableDirector fireTimeline;
 
     void Start()
     {
-        fireTimeline = GameObject.Find("fire_timeline").GetComponent<PlayableDirector>();
-        fireTimeline.Stop();
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
 
         if (mTrackableBehaviour)
@@ -27,12 +24,27 @@ public class ActionCardTracker : MonoBehaviour, ITrackableEventHandler
             newStatus == TrackableBehaviour.Status.TRACKED) {
 				switch (gameObject.name)
 				{
-					case "FireTarget":
-						fireTimeline.Play();
-						break;
-					case "...":
-						break;
-					default:
+					case "TargetFire":
+                    Debug.Log("TargetFire erkant!");
+                        if (!GameController.Instance.eventFire)
+                        {
+                            GameController.Instance.eventFire = true;
+                            GameController.Instance.PlayerActivatedEvent();
+                        }
+                        break;
+					case "TargetUfo":
+                        if (!GameController.Instance.eventUfo)
+                        {
+                            GameController.Instance.eventUfo = true;
+                        }
+                        break;
+                    case "TargetCarCrash":
+                        if (!GameController.Instance.eventCarCrash)
+                        {
+                            GameController.Instance.eventCarCrash = true;
+                        }
+                        break;
+                default:
 						break;
 				}
         
