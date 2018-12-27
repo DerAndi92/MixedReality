@@ -22,6 +22,7 @@ public class ActionCardTracker : MonoBehaviour, ITrackableEventHandler
     {
 		if (newStatus == TrackableBehaviour.Status.DETECTED ||
             newStatus == TrackableBehaviour.Status.TRACKED) {
+                Debug.Log("target erkant!");
 				switch (gameObject.name)
 				{
 					case "TargetFire":
