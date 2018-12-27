@@ -6,6 +6,7 @@ TagManager:
   tags:
   - triggerTarget
   - house
+  - Part of Action
   layers:
   - Default
   - TransparentFX
