@@ -6,8 +6,10 @@ public class ObjectActionHandler : MonoBehaviour
 {
     public bool isFirePart;
     public bool isUfoPart;
-    public float FirePositionX;
-    public float FirePositionZ;
+    
+    public bool isWaterThrowerRight;
+    public GameObject fireCarStopAtWaypoint;
+
     
     // Start is called before the first frame update
     void Start()

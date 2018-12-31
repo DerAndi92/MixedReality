@@ -11,11 +11,7 @@ public class RescueCardTracker : MonoBehaviour, ITrackableEventHandler
 
     void Start()
     {
-        fireCarTimeline = GameObject.Find("fireCar_timeline").GetComponent<PlayableDirector>();
-        fireCarTimeline.Stop();
-
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
-
         if (mTrackableBehaviour)
         {
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
@@ -29,7 +25,7 @@ public class RescueCardTracker : MonoBehaviour, ITrackableEventHandler
 				switch (gameObject.name)
 				{
 					case "FireCarTarget":
-						fireCarTimeline.Play();
+                        GameController.Instance.trackedFireCarTarget = true;
 						break;
 					case "...":
 						break;

@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour {
     public bool eventFire = false;
     public bool isFire = false;
     public bool fireCarSend = false;
+    public bool trackedFireCarTarget = false;
 
     public bool eventUfo = false;
     public bool isUfo = false;
