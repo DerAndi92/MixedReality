@@ -5,7 +5,7 @@ using UnityEngine;
 public class Talking : MonoBehaviour {
     private Animator animator;
     public float timeLeft = 4.0f;
-    private int activeAnimation = 2;
+    public int activeAnimation = 2;
     // Use this for initialization
     void Start () {
         this.animator = this.GetComponent<Animator>();
