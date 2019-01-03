@@ -6,14 +6,15 @@ using UnityEngine.Playables;
 
 public class EventFireCar : MonoBehaviour {
 
-    private PlayableDirector fireCarTimeline;
-
+    private GameObject fireCar;
+    private Waypoints waypointsFireCar;
     // Use this for initialization
     void Start()
     {
+        fireCar = GameObject.Find("fireCar");
+        waypointsFireCar = fireCar.GetComponent<Waypoints>();
+
         GameController.Instance.SubscribeScriptToGameEventUpdates(this);
-        fireCarTimeline = GameObject.Find("fireCar_timeline").GetComponent<PlayableDirector>();
-        fireCarTimeline.Stop();
     }
 
     void OnDestroy()
@@ -23,11 +24,13 @@ public class EventFireCar : MonoBehaviour {
 
     void gameEventUpdated()
     {
-        if (GameController.Instance.eventFire)
-        {
-            fireCarTimeline.Play();
-
+        Debug.Log("YEEEEEAH______");
+        if(!GameController.Instance.eventFire && !GameController.Instance.fireCareOnEvent) {
+            waypointsFireCar.current = 0;
+            waypointsFireCar.isMoving = true;
+            GameController.Instance.fireCareOnEvent = true;
         }
-     }
+
+    }
 }
 

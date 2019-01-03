@@ -21,7 +21,7 @@ public class Waypoints : MonoBehaviour
     private float acutalSpeed;
     private bool isBackward;
     private bool collision = false;
-    private int current = 0;
+    public int current = 0;
     private List<Collider> collissions = new List<Collider>();
 
     private void Start()
@@ -68,6 +68,10 @@ public class Waypoints : MonoBehaviour
                             else
                             {
                                 isMoving = false;
+                                current = 0;
+                                if(this.name == "fireCar") {
+                                    GameController.Instance.fireCareOnEvent = false;
+                                }
                             }
                         }
                     }

@@ -5,7 +5,7 @@ using UnityEngine.Playables;
 
 public class EventFire : MonoBehaviour {
 
-    private float fireDifferenceNumber = 10;
+    private float fireDurationInSeconds = 2;
     private GameObject[] objects;
     private int objectNumber = 0;
     private GameObject fireGameObject;
@@ -37,7 +37,7 @@ public class EventFire : MonoBehaviour {
         fireCar = GameObject.Find ("fireCar");
         fireCarWayPointScript = fireCar.GetComponent<Waypoints> ();
 
-        timer = fireDifferenceNumber;
+        timer = fireDurationInSeconds;
         if (objects == null)
             objects = GameObject.FindGameObjectsWithTag ("Part of Action");
     }
@@ -47,16 +47,27 @@ public class EventFire : MonoBehaviour {
         if (GameController.Instance.eventFire) {
             // solange das Feuerwehrauto noch nicht getracked wurde
             if (!GameController.Instance.trackedFireCarTarget) {
-
-                // alle x Sekunden geht das Feuer zum nächsten Gebäude
-                if (timer < fireDifferenceNumber) {
-                    timerUpdate ();
-                    if(timer > (fireDifferenceNumber - 2) && !isBuildingDisabled) {
-                        disableBuilding ();
-                        isBuildingDisabled = true;
+                if(objectNumber < objects.Length) {
+                    // alle x Sekunden geht das Feuer zum nächsten Gebäude
+                    if (timer < fireDurationInSeconds) {
+                        timerUpdate ();
+                        // Das Gebäude wird eine Sekunde vor Feuerwechsel ausgelendet
+                        if(timer > (fireDurationInSeconds - 1) && !isBuildingDisabled) {
+                            disableBuilding ();
+                            isBuildingDisabled = true;
+                        }
+                    } else {
+                        timerReset ();
                     }
                 } else {
-                    timerReset ();
+                    if (timer < fireDurationInSeconds)
+                    {
+                        timerUpdate();
+                    } else {
+                        disableBuilding();
+                        fireParticleSystem.Stop();
+                        GameController.Instance.eventFire = false;
+                    }
                 }
                 // wenn das Feuerwehrauto getracked wird
             } else {
@@ -92,6 +103,7 @@ public class EventFire : MonoBehaviour {
                                 waterParticleSystem.Stop ();
                                 fireParticleSystem.Stop();
                                 fireCarWayPointScript.isMoving = true;
+                                GameController.Instance.eventFire = false;
                             }
 
                         }
@@ -108,12 +120,11 @@ public class EventFire : MonoBehaviour {
 
     void timerReset () {
         actualObject = objects[objectNumber];
-        Debug.Log (actualObject.name);
         objectActionHandlerScript = actualObject.GetComponent<ObjectActionHandler> ();
         actualObjectBuilding = GameObject.Find (actualObject.name + "/Building");
         actualObjectBurned = GameObject.Find (actualObject.name + "/Burned");
         actualObjectFirePosition = GameObject.Find (actualObject.name + "/FirePosition");
-         isBuildingDisabled = false;
+        isBuildingDisabled = false;
         startFire ();
         timer = 0;
         objectNumber++;
@@ -122,9 +133,8 @@ public class EventFire : MonoBehaviour {
     void startFire () {
         if (objects.Length >= objectNumber) {
             if (actualObject != null) {
-                Debug.Log (actualObjectFirePosition.transform.position);
-                fireParticleSystem.Play ();
                 fireGameObject.transform.position = actualObjectFirePosition.transform.position;
+                fireParticleSystem.Play();
             }
         }
     }
