@@ -17,14 +17,13 @@ public class EventFireCar : MonoBehaviour {
         GameController.Instance.SubscribeScriptToGameEventUpdates(this);
     }
 
-    void OnDestroy()
+    void OnDisable()
     {
         GameController.Instance.DeSubscribeScriptToGameEventUpdates(this);
     }
 
     void gameEventUpdated()
     {
-        Debug.Log("YEEEEEAH______");
         if(!GameController.Instance.eventFire && !GameController.Instance.fireCareOnEvent) {
             waypointsFireCar.current = 0;
             waypointsFireCar.isMoving = true;

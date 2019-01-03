@@ -26,15 +26,16 @@ public class RescueCardTracker : MonoBehaviour, ITrackableEventHandler
 				{
 					case "FireCarTarget":
                         GameController.Instance.trackedFireCarTarget = true;
-                    GameController.Instance.Invoke("PlayerActivatedEvent",0);
+                        GameController.Instance.Invoke("PlayerActivatedEvent",0);
 						break;
-					case "...":
-						break;
+					case "HelicopterTarget":
+                        GameController.Instance.eventHelicopter = true;
+                        break;
 					default:
 						break;
 				}
         
-        }
+        } 
         
     }
 

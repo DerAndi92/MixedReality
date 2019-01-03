@@ -5,7 +5,7 @@ using UnityEngine.Playables;
 
 public class EventFire : MonoBehaviour {
 
-    private float fireDurationInSeconds = 2;
+    private float fireDurationInSeconds = 10;
     private GameObject[] objects;
     private int objectNumber = 0;
     private GameObject fireGameObject;

@@ -39,12 +39,6 @@ public class ActionCardTracker : MonoBehaviour, ITrackableEventHandler
                             GameController.Instance.eventUfo = true;
                         }
                         break;
-                    case "TargetCarCrash":
-                        if (!GameController.Instance.eventCarCrash)
-                        {
-                            GameController.Instance.eventCarCrash = true;
-                        }
-                        break;
                 default:
 						break;
 				}
