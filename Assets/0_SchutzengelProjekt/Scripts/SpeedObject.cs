@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class SpeedObject : MonoBehaviour {
 
-    public float SecondsLong = 3;
-    public float SecondsShort = 2;
-    public float SpeedBoostLong = 12;
-    public float SpeedBoostShort = 10;
+    public float SecondsLong = 2.5f;
+    public float SecondsShort = 1.5f;
+    public float SecondsTiny = 0.8f;
+    public float SpeedBoostLong = 13;
+    public float SpeedBoostShort = 11;
+    public float SpeedBoostTiny = 9;
 
     private float delta;
 
@@ -34,6 +36,10 @@ public class SpeedObject : MonoBehaviour {
             else if(delta >= SecondsShort)
             {
                 wp.setActualSpeed(SpeedBoostShort);
+            }
+            else if (delta >= SecondsTiny)
+            {
+                wp.setActualSpeed(SpeedBoostTiny);
             }
             else
             {

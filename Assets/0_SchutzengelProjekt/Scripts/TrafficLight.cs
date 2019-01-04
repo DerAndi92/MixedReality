@@ -43,6 +43,7 @@ public class TrafficLight : MonoBehaviour {
             else if (!redForCar && wp.collisionGroup == "people")
             {
                 wp.isMoving = false;
+                other.GetComponent<Moveit>().stop();
                 people.Add(other);
             }
             else if(redForCar && wp.collisionGroup == "people")
@@ -77,6 +78,7 @@ public class TrafficLight : MonoBehaviour {
             foreach (Collider p in people)
             {
                 p.GetComponent<Waypoints>().isMoving = true;
+                p.GetComponent<Moveit>().go();
             }
         }
 
