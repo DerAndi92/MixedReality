@@ -1,151 +1,1 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Playables;
-
-public class EventFire : MonoBehaviour {
-
-    private float fireDurationInSeconds = 10;
-    private GameObject[] objects;
-    private int objectNumber = 0;
-    private GameObject fireGameObject;
-    private ParticleSystem fireParticleSystem;
-    private GameObject waterGameObject;
-    private ParticleSystem waterParticleSystem;
-    private GameObject fireCar;
-    private Waypoints fireCarWayPointScript;
-    private GameObject fireCarStopAtWaypoint;
-    float timer;
-
-    private GameObject actualObject;
-    private GameObject actualObjectBuilding;
-    private GameObject actualObjectBurned;
-    private GameObject actualObjectFirePosition;
-    private ObjectActionHandler objectActionHandlerScript;
-
-    private bool isBuildingDisabled = false;
-    private bool isWaterThrower = false;
-    private bool isFireCarAtPosition = false;
-    // Use this for initialization
-    void Start () {
-        // find objects
-        fireGameObject = GameObject.Find ("Fire");
-        fireParticleSystem = GameObject.Find ("Fire").GetComponent<ParticleSystem> ();
-        waterGameObject = GameObject.Find ("Water_Thrower");
-        waterParticleSystem = GameObject.Find ("Water_Thrower").GetComponent<ParticleSystem> ();
-
-        fireCar = GameObject.Find ("fireCar");
-        fireCarWayPointScript = fireCar.GetComponent<Waypoints> ();
-
-        timer = fireDurationInSeconds;
-        if (objects == null)
-            objects = GameObject.FindGameObjectsWithTag ("Part of Action");
-    }
-
-    void Update () {
-        // wenn das Event Feuer ausgelöst wird
-        if (GameController.Instance.eventFire) {
-            // solange das Feuerwehrauto noch nicht getracked wurde
-            if (!GameController.Instance.trackedFireCarTarget) {
-                if(objectNumber < objects.Length) {
-                    // alle x Sekunden geht das Feuer zum nächsten Gebäude
-                    if (timer < fireDurationInSeconds) {
-                        timerUpdate ();
-                        // Das Gebäude wird eine Sekunde vor Feuerwechsel ausgelendet
-                        if(timer > (fireDurationInSeconds - 1) && !isBuildingDisabled) {
-                            disableBuilding ();
-                            isBuildingDisabled = true;
-                        }
-                    } else {
-                        timerReset ();
-                    }
-                } else {
-                    if (timer < fireDurationInSeconds)
-                    {
-                        timerUpdate();
-                    } else {
-                        disableBuilding();
-                        fireParticleSystem.Stop();
-                        GameController.Instance.eventFire = false;
-                    }
-                }
-                // wenn das Feuerwehrauto getracked wird
-            } else {
-                // Feuerwehrauto wird losgeschickt
-                if (!GameController.Instance.fireCarSend) {
-                    GameController.Instance.fireCarSend = true;
-                    fireCarWayPointScript.isMoving = true;
-                    fireCarStopAtWaypoint = objectActionHandlerScript.fireCarStopAtWaypoint;
-                } else {
-                    // solange das Feuerwehrauto noch nicht vor Ort ist
-                    if (!isFireCarAtPosition) {
-                        if (Vector3.Distance (fireCar.transform.position, fireCarStopAtWaypoint.transform.position) < 0.5) {
-                            isFireCarAtPosition = true;
-                            fireCarWayPointScript.isMoving = false;
-                        }
-                    // Feuerwehrauto ist vor Ort
-                    } else {
-                        // Wasserwerfer starten
-                        if (!isWaterThrower) {
-                            if (objectActionHandlerScript.isWaterThrowerRight) {
-                                waterGameObject.transform.rotation = Quaternion.Euler (0, 90, 0);
-                            } else {
-                                waterGameObject.transform.rotation = Quaternion.Euler (0, -90, 0);
-                            }
-                            waterGameObject.transform.position = fireCar.transform.position;
-                            waterParticleSystem.Play ();
-                            isWaterThrower = true;
-                            timer = 0;
-                        // Wasserwerfer 3 Sekunden laufen lassen, dann Feuerwehrauto weiter
-                        } else {
-                            timerUpdate ();
-                            if (timer > 3) {
-                                waterParticleSystem.Stop ();
-                                fireParticleSystem.Stop();
-                                fireCarWayPointScript.isMoving = true;
-                                GameController.Instance.eventFire = false;
-                            }
-
-                        }
-                    }
-                }
-
-            }
-        }
-    }
-
-    void timerUpdate () {
-        timer += Time.deltaTime;
-    }
-
-    void timerReset () {
-        actualObject = objects[objectNumber];
-        objectActionHandlerScript = actualObject.GetComponent<ObjectActionHandler> ();
-        actualObjectBuilding = GameObject.Find (actualObject.name + "/Building");
-        actualObjectBurned = GameObject.Find (actualObject.name + "/Burned");
-        actualObjectFirePosition = GameObject.Find (actualObject.name + "/FirePosition");
-        isBuildingDisabled = false;
-        startFire ();
-        timer = 0;
-        objectNumber++;
-    }
-
-    void startFire () {
-        if (objects.Length >= objectNumber) {
-            if (actualObject != null) {
-                fireGameObject.transform.position = actualObjectFirePosition.transform.position;
-                fireParticleSystem.Play();
-            }
-        }
-    }
-
-    void stopFireEvent () {
-        waterParticleSystem.Stop ();
-    }
-
-    void disableBuilding () {
-        actualObjectBuilding.SetActive (false);
-        actualObjectBurned.transform.localScale = new Vector3 (1, 1, 1);
-    }
-
-}
+﻿using System.Collections; using System.Collections.Generic; using UnityEngine; using UnityEngine.Playables;  public class EventFire : MonoBehaviour {      private GameObject[] objects;     private GameObject fireGameObject;     private GameObject actualObject;     private GameObject actualObjectBuilding;     private GameObject actualObjectBurned;     private GameObject actualObjectFirePosition;     private ParticleSystem fireParticleSystem;     private ObjectActionHandler objectActionHandlerScript;       private float timer;     private float fireDurationInSeconds = 2;     private int objectNumber = 0;      private bool isBuildingDisabled = false;      void Start () {         timer = fireDurationInSeconds;         fireGameObject = GameObject.Find ("Fire");         fireParticleSystem = GameObject.Find ("Fire").GetComponent<ParticleSystem> ();         objects = GameObject.FindGameObjectsWithTag ("Part of Action");         foreach (GameObject obj in objects)         {             Debug.Log(obj.name);         }     }      void Update () {         // wenn das Event Feuer ausgelöt wird         if (GameController.Instance.eventFire) {             // solange das Feuerwehrauto noch nicht getracked wurde             if (!GameController.Instance.eventFireCar) {                 Debug.Log("YEEAH___");                 if(objectNumber < objects.Length) {                     // alle x Sekunden geht das Feuer zum nähsten Gebäde                     if (timer < fireDurationInSeconds) {                         TimerUpdate();                         // Das Gebäde wird eine Sekunde vor Feuerwechsel ausgelendet                         if(timer > (fireDurationInSeconds - 1) && !isBuildingDisabled) {                             DisableBuilding();                             isBuildingDisabled = true;                         }                     } else {                         TimerReset();                     }                     // Wenn alle Häser abgebrannt sind                 } else {                     if (timer < fireDurationInSeconds)                     {                         TimerUpdate();                     } else {                         DisableBuilding();                         fireParticleSystem.Stop();                         GameController.Instance.eventFire = false;                     }                 }                 // wenn das Feuerwehrauto getracked wird             } else {                 if(GameController.Instance.isFireCleared) {                      fireParticleSystem.Stop();                 }             }          }     }      void TimerUpdate () {         timer += Time.deltaTime;     }      void TimerReset () {         actualObject = objects[objectNumber];         objectActionHandlerScript = actualObject.GetComponent<ObjectActionHandler> ();         GameController.Instance.fireCarStopAtWaypoint = objectActionHandlerScript.fireCarStopAtWaypoint;         GameController.Instance.isWaterThrowerRight = objectActionHandlerScript.isWaterThrowerRight;         Debug.Log("GameController.Instance.isWaterThrowerRight " + GameController.Instance.isWaterThrowerRight);         actualObjectBuilding = GameObject.Find (actualObject.name + "/Building");         actualObjectBurned = GameObject.Find (actualObject.name + "/Burned");         actualObjectFirePosition = GameObject.Find (actualObject.name + "/FirePosition");         isBuildingDisabled = false;         StartFire();         timer = 0;         objectNumber++;     }      void StartFire () {         if (objects.Length >= objectNumber) {             if (actualObject != null) {                 fireGameObject.transform.position = actualObjectFirePosition.transform.position;                 fireParticleSystem.Play();             }         }     }      void DisableBuilding () {         actualObjectBuilding.SetActive (false);         actualObjectBurned.transform.localScale = new Vector3 (1, 1, 1);     }  } 

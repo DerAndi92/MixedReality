@@ -10,6 +10,10 @@ public class GameController : MonoBehaviour {
     public bool eventFire = false;
     public bool eventFireCar = false;
 
+    public bool isFireCleared = false;
+    public GameObject fireCarStopAtWaypoint;
+    public bool isWaterThrowerRight = false;
+
     public bool eventUfo = false;
     public bool eventHelicopter = false;
 
@@ -40,6 +44,7 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        fireCarStopAtWaypoint = null;
         DontDestroyOnLoad(gameObject);
 	}
 
