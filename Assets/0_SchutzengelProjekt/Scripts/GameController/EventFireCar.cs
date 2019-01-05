@@ -7,12 +7,14 @@ using UnityEngine.Playables;
 public class EventFireCar : MonoBehaviour {
 
     private GameObject fireCar;
+    private AudioSource sirene;
     private Waypoints waypointsFireCar;
     // Use this for initialization
     void Start()
     {
         fireCar = GameObject.Find("fireCar");
         waypointsFireCar = fireCar.GetComponent<Waypoints>();
+        sirene = GameObject.Find("FireCarSireneAudioSource").GetComponent<AudioSource>();
 
         GameController.Instance.SubscribeScriptToGameEventUpdates(this);
     }
