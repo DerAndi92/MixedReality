@@ -5,6 +5,13 @@ using UnityEngine;
 public class GameController : MonoBehaviour {
 
     public List<MonoBehaviour> eventSubscribedScripts = new List<MonoBehaviour>();
+    public bool isEventInPlace = false;
+    public bool isRescueInPlace = false;
+
+    public bool isFireTargetTracked = false;
+    public bool isUfoTargetTracked = false;
+    public bool isFireCarTargetTracked = false;
+    public bool isHelicopterTargetTracked = false;
 
     // Event Fire & FireCar
     public bool eventFire = false;

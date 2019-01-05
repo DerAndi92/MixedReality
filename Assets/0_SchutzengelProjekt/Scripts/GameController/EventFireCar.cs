@@ -50,7 +50,7 @@ public class EventFireCar : MonoBehaviour {
             {
                 if(!isSireneOn)
                 {
-                    //sirene.Play();
+                    sirene.Play();
                     isSireneOn = true;
                 }
                 // solange das Feuerwehrauto noch nicht vor Ort ist
@@ -126,7 +126,6 @@ public class EventFireCar : MonoBehaviour {
 
     void PrepareFireCar()
     {
-        sirene.Play();
         fireCar.transform.position = startWayPoint.transform.position;
         fireCar.transform.eulerAngles = new Vector3(0, -90, 0);
         fireCar.SetActive(true);

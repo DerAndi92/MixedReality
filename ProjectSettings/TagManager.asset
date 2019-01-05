@@ -8,6 +8,8 @@ TagManager:
   - house
   - Part of Action
   - Part of Ufo Action
+  - RescueTarget
+  - EventTarget
   layers:
   - Default
   - TransparentFX
