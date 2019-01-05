@@ -5,31 +5,20 @@ using UnityEngine;
 public class GameController : MonoBehaviour {
 
     public List<MonoBehaviour> eventSubscribedScripts = new List<MonoBehaviour>();
-    public int gameEventID = 0;
 
+    // Event Fire & FireCar
     public bool eventFire = false;
     public bool eventFireCar = false;
-
     public bool isFireCleared = false;
-    public GameObject fireCarStopAtWaypoint;
     public bool isWaterThrowerRight = false;
+    public GameObject fireCarStopAtWaypoint;
 
+    // Event Ufo & Heli
     public bool eventUfo = false;
     public bool eventHelicopter = false;
-
     public bool ufoIsShot = false;
-    public bool isFire = false;
-    public bool fireCarSend = false;
-
-    public bool trackedFireCarTarget = false;
-    public bool trackedHelicopterTarget = false;
-
-
-    public bool fireCareOnEvent = false;
-
 
     private static GameController instance;
-
 
     public static GameController Instance {
         get {
@@ -40,17 +29,10 @@ public class GameController : MonoBehaviour {
         }
     }
 
-
-
-	// Use this for initialization
-	void Start () {
+   	void Start () {
         fireCarStopAtWaypoint = null;
         DontDestroyOnLoad(gameObject);
 	}
-
-    private void Update()
-    {
-    }
 
     public void SubscribeScriptToGameEventUpdates(MonoBehaviour pScript) {
         eventSubscribedScripts.Add(pScript);
@@ -65,8 +47,6 @@ public class GameController : MonoBehaviour {
     }
 
     public void PlayerActivatedEvent() {
-        gameEventID++;
-        Debug.Log("Gamecontrolle playerPassedEvent" + gameEventID);
         foreach(MonoBehaviour _script in eventSubscribedScripts) {
             _script.Invoke("gameEventUpdated", 0);
         }

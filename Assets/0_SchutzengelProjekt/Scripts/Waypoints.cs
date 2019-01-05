@@ -69,9 +69,7 @@ public class Waypoints : MonoBehaviour
                             {
                                 isMoving = false;
                                 current = 0;
-                                if(this.name == "fireCar") {
-                                    GameController.Instance.fireCareOnEvent = false;
-                                }
+                           
                             }
                         }
                     }

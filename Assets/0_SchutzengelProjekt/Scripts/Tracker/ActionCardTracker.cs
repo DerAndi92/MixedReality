@@ -30,7 +30,6 @@ public class ActionCardTracker : MonoBehaviour, ITrackableEventHandler
                         if (!GameController.Instance.eventFire)
                         {
                             GameController.Instance.eventFire = true;
-                            GameController.Instance.PlayerActivatedEvent();
                         }
                         break;
 					case "TargetUfo":

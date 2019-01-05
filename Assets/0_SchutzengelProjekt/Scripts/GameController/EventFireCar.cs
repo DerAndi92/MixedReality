@@ -8,7 +8,9 @@ public class EventFireCar : MonoBehaviour {
 
     private GameObject fireCar;
     private GameObject waterThrowerGameObject;
+    private GameObject startWayPoint;
     private GameObject endWayPoint;
+
     private ObjectActionHandler objectActionHandlerScript;
 
     private ParticleSystem waterThrowerParticleSystem;
@@ -16,6 +18,7 @@ public class EventFireCar : MonoBehaviour {
     private AudioSource sirene;
 
     private Waypoints waypointsFireCar;
+    private bool isSireneOn = false;
     private bool isFireCarAtPosition = false;
     private bool isWaterThrower = false;
     private bool isFireCarPrepared = false;
@@ -24,7 +27,9 @@ public class EventFireCar : MonoBehaviour {
     {
         fireCar = GameObject.Find("fireCar");
         sirene = GameObject.Find("FireCarSireneAudioSource").GetComponent<AudioSource>();
+        startWayPoint = GameObject.Find("wayPoint_Parkplatz_Start");
         endWayPoint = GameObject.Find("wayPoint_Parkplatz_Ende");
+
         waypointsFireCar = fireCar.GetComponent<Waypoints>();
         waterThrowerGameObject = GameObject.Find("Water_Thrower");
         waterThrowerParticleSystem = GameObject.Find("Water_Thrower").GetComponent<ParticleSystem>();
@@ -37,93 +42,112 @@ public class EventFireCar : MonoBehaviour {
 
         if(GameController.Instance.eventFireCar)
         {
-            fireCar.SetActive(true);
+            if(!isFireCarPrepared) {
+                Debug.Log("_______Prepare FireCar");
+                PrepareFireCar();
+            }
             if (GameController.Instance.eventFire && !GameController.Instance.isFireCleared)
             {
-                if (!GameController.Instance.fireCarSend)
+                if(!isSireneOn)
                 {
-                    GameController.Instance.fireCarSend = true;
-                    waypointsFireCar.isMoving = true;
-                    sirene.Play();
+                    //sirene.Play();
+                    isSireneOn = true;
+                }
+                // solange das Feuerwehrauto noch nicht vor Ort ist
+                if (!isFireCarAtPosition)
+                {
+                    if (Vector3.Distance(fireCar.transform.position, GameController.Instance.fireCarStopAtWaypoint.transform.position) < 0.5)
+                    {
+                        Debug.Log("_______Position FireCar");
+                        isFireCarAtPosition = true;
+                        waypointsFireCar.isMoving = false;
+                    }
                 }
                 else
                 {
-                    // solange das Feuerwehrauto noch nicht vor Ort ist
-                    if (!isFireCarAtPosition)
+                    // Wasserwerfer starten
+                    if (!isWaterThrower)
                     {
-                        if (Vector3.Distance(fireCar.transform.position, GameController.Instance.fireCarStopAtWaypoint.transform.position) < 0.5)
-                        {
-                            isFireCarAtPosition = true;
-                            waypointsFireCar.isMoving = false;
-                        }
+                        Debug.Log("_______Water FireCar");
+                        ActivateWaterThrower();
                     }
                     else
                     {
-                        // Wasserwerfer starten
-                        if (!isWaterThrower)
+                        TimerUpdate();
+                        if (timer > 3)
                         {
-                            Debug.Log("GameController.Instance.isWaterThrowerRight " + GameController.Instance.isWaterThrowerRight);
-
-                            if (GameController.Instance.isWaterThrowerRight)
-                            {
-                                waterThrowerGameObject.transform.rotation = Quaternion.Euler(0, 90, 0);
-                            }
-                            else
-                            {
-                                waterThrowerGameObject.transform.rotation = Quaternion.Euler(0, -90, 0);
-                            }
-                            waterThrowerGameObject.transform.position = fireCar.transform.position;
-                            waterThrowerParticleSystem.Play();
-                            isWaterThrower = true;
-                            timer = 0;
-                        }
-                        else
-                        {
-                            // Wasserwerfer 3 Sekunden laufen lassen, dann Feuerwehrauto weiter
-                            timerUpdate();
-                            if (timer > 3)
-                            {
-                                sirene.Stop();
-                                waterThrowerParticleSystem.Stop();
-                                waypointsFireCar.isMoving = true;
-                                GameController.Instance.isFireCleared = true;
-                            }
-
+                            Debug.Log("_______DeWater FireCar");
+                            DeactivateWaterThrower();
                         }
                     }
                 }
+                
             }
             else
             {
-                if (Vector3.Distance(fireCar.transform.position, endWayPoint.transform.position) < 0.5)
+                if (Vector3.Distance(fireCar.transform.position, endWayPoint.transform.position) < 1)
                 {
-                    GameController.Instance.eventFireCar = false;
-                    GameController.Instance.eventFire = false;
-                }
-            }
-        }
-        else
-        {
-            if(!isFireCarPrepared) { 
-                waypointsFireCar.current = 0;
-                waypointsFireCar.isMoving = true;
-                GameController.Instance.fireCareOnEvent = true;
-                isFireCarPrepared = true;
-            }
-            else
-            {
-                if (Vector3.Distance(fireCar.transform.position, endWayPoint.transform.position) < 0.5)
-                {
-                    GameController.Instance.eventFireCar = false;
+                    Debug.Log("_______Reset FireCar");
+                    ResetFireCar();
                 }
             }
         }
     }
-    void timerUpdate()
+
+    void TimerUpdate()
     {
         timer += Time.deltaTime;
     }
 
+    void ActivateWaterThrower()
+    {
+        if (GameController.Instance.isWaterThrowerRight)
+        {
+            waterThrowerGameObject.transform.rotation = Quaternion.Euler(0, 90, 0);
+        }
+        else
+        {
+            waterThrowerGameObject.transform.rotation = Quaternion.Euler(0, -90, 0);
+        }
+        waterThrowerGameObject.transform.position = fireCar.transform.position;
+        waterThrowerParticleSystem.Play();
+        isWaterThrower = true;
+        timer = 0;
+    }
+
+    void DeactivateWaterThrower()
+    {
+        sirene.Stop();
+        waterThrowerParticleSystem.Stop();
+        waypointsFireCar.isMoving = true;
+        GameController.Instance.isFireCleared = true;
+    
+    }
+
+    void PrepareFireCar()
+    {
+        sirene.Play();
+        fireCar.transform.position = startWayPoint.transform.position;
+        fireCar.transform.eulerAngles = new Vector3(0, -90, 0);
+        fireCar.SetActive(true);
+        waypointsFireCar.current = 0;
+        isFireCarPrepared = true;
+        waypointsFireCar.isMoving = true;
+    }
+
+    void ResetFireCar()
+    {
+        GameController.Instance.eventFireCar = false;
+        GameController.Instance.eventFire = false;
+        GameController.Instance.isFireCleared = false;
+        isFireCarAtPosition = false;
+        isWaterThrower = false;
+        fireCar.SetActive(false);
+        waypointsFireCar.current = 0;
+        isFireCarPrepared = false;
+        timer = 0;
+        isSireneOn = false;
+    }
 
 }
 
