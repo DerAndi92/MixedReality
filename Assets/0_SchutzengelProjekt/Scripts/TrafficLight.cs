@@ -30,7 +30,6 @@ public class TrafficLight : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
         Waypoints wp = other.GetComponent<Waypoints>();
         if (wp != null)
         {
@@ -78,7 +77,7 @@ public class TrafficLight : MonoBehaviour {
             foreach (Collider p in people)
             {
                 p.GetComponent<Waypoints>().isMoving = true;
-                p.GetComponent<Moveit>().go();
+                p.GetComponent<Moveit>().start();
             }
         }
 

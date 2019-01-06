@@ -25,6 +25,9 @@ public class GameController : MonoBehaviour {
     public bool eventHelicopter = false;
     public bool ufoIsShot = false;
 
+    // Event Tornado
+    public bool eventTornado = false;
+
     private static GameController instance;
 
     public static GameController Instance {

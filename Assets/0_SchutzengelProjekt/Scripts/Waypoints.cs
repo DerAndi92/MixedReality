@@ -13,6 +13,7 @@ public class Waypoints : MonoBehaviour
     public bool isMoving;
     public bool repeat;
     public bool backward;
+    public bool vanish;
 
     public float speed;
     public float waypointRadius;
@@ -54,8 +55,12 @@ public class Waypoints : MonoBehaviour
                         current++;
                         if (current >= waypoints.Length)
                         {
-                            // Reached last waypoint. What now? Go Backward? Repeat it? Or nothing?
-                            if (backward)
+                            // Reached last waypoint. What now? Vanish? Go Backward? Repeat it? Or nothing?
+                            if (vanish)
+                            {
+                                Destroy(transform.gameObject);
+                            }
+                            else if (backward)
                             {
                                 transform.Rotate(0, 180, 0);
                                 isBackward = true;
@@ -69,7 +74,7 @@ public class Waypoints : MonoBehaviour
                             {
                                 isMoving = false;
                                 current = 0;
-                           
+
                             }
                         }
                     }
@@ -141,5 +146,22 @@ public class Waypoints : MonoBehaviour
     public void resetActualSpeed()
     {
         this.acutalSpeed = speed;
+    }
+
+    public void changeWaypoints(GameObject[] new_waypoints, float[] New_rotations, float new_speed, bool new_isMoving, bool new_repeat, bool new_backward, bool new_vanish)
+    {
+        this.waypoints = new_waypoints;
+        this.rotations = New_rotations;
+        this.speed = new_speed;
+        this.isMoving = new_isMoving;
+        this.repeat = new_repeat;
+        this.backward = new_backward;
+        this.vanish = new_vanish;
+
+        this.resetActualSpeed();
+        this.current = 0;
+        this.isBackward = false;
+        this.collision = false;
+        this.collissions.Clear();
     }
 }

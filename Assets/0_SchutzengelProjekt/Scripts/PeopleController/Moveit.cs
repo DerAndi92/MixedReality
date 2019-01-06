@@ -12,27 +12,28 @@ public class Moveit: MonoBehaviour {
         this.animator = this.GetComponent<Animator>();
         if(this.animator != null)
         {
-            this.animator.SetFloat("Speed_f", 0.0f);
-            this.animator.SetBool("Grounded", true);
-            this.animator.SetBool("Static_b", true);
-            this.animator.SetInteger("Animation_int", 0);
-            this.animator.SetInteger("WeaponType_int", 0);
-            if (this.walk) this.go();
+            if (this.walk) this.start();
         }
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
     public void stop()
     {
+        walk = false;
         this.animator.SetFloat("Speed_f", 0.0f);
     }
 
-    public void go()
+    public void start()
     {
+        walk = true;
         this.animator.SetFloat("Speed_f", 0.4f);
+        this.animator.SetBool("Grounded", true);
+        this.animator.SetBool("Static_b", true);
+        this.animator.SetInteger("Animation_int", 0);
+        this.animator.SetInteger("WeaponType_int", 0);
+    }
+
+    public void run()
+    {
+        this.animator.SetFloat("Speed_f", 0.6f);
     }
 }
