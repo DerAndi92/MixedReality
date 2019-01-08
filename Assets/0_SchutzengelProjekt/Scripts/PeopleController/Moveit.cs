@@ -6,6 +6,7 @@ public class Moveit: MonoBehaviour {
 
     private Animator animator;
     public bool walk = true;
+    public float speed = 0.4f;
 
 	// Use this for initialization
 	void Start () {
@@ -25,7 +26,7 @@ public class Moveit: MonoBehaviour {
     public void start()
     {
         walk = true;
-        this.animator.SetFloat("Speed_f", 0.4f);
+        this.animator.SetFloat("Speed_f", speed);
         this.animator.SetBool("Grounded", true);
         this.animator.SetBool("Static_b", true);
         this.animator.SetInteger("Animation_int", 0);

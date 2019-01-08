@@ -35,6 +35,8 @@ public class GameController : MonoBehaviour {
     public bool eventBomb = false;
     public bool eventPolice = false;
 
+
+    public bool finalExplosion = false;
     private static GameController instance;
 
     public static GameController Instance {
