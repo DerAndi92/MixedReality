@@ -96,11 +96,7 @@ public class EventTornado : MonoBehaviour
             }
             
         }
-        else if(!done && timer > 4)
-        {
-            // ENTFERNEN WENN MARKER DRIN!!!
-            GameController.Instance.eventTornado = true;
-        }
+
 
         if (!done)
         {

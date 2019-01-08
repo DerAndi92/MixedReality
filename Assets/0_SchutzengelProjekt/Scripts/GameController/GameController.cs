@@ -12,6 +12,9 @@ public class GameController : MonoBehaviour {
     public bool isUfoTargetTracked = false;
     public bool isFireCarTargetTracked = false;
     public bool isHelicopterTargetTracked = false;
+    public bool isTornadoTargetTracked = false;
+    public bool isBombTargetTracked = false;
+    public bool isPoliceTargetTracked = false;
 
     // Event Fire & FireCar
     public bool eventFire = false;
@@ -27,6 +30,10 @@ public class GameController : MonoBehaviour {
 
     // Event Tornado
     public bool eventTornado = false;
+
+    // Event Bomb & Police
+    public bool eventBomb = false;
+    public bool eventPolice = false;
 
     private static GameController instance;
 

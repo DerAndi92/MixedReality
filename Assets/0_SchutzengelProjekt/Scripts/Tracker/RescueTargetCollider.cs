@@ -5,44 +5,38 @@ using UnityEngine;
 public class RescueTargetCollider : MonoBehaviour
 {
 
-    GameObject test;
-    // Update is called once per frame
-    void Start()
-    {
-        test = GameObject.Find("van_mesh_red_TEST");
-    }
-
     void OnTriggerEnter(Collider other)
     {
-        switch (other.tag)
+        // Der Collider vom Parkplatz wird getriggert
+        if(other.tag == "RescueTarget")
         {
-            case "RescueTarget":
-                GameController.Instance.isRescueInPlace = true;
-                if (GameController.Instance.isFireCarTargetTracked)
-                {
-                    GameController.Instance.eventFireCar = true;
-                }
-                else if (GameController.Instance.isHelicopterTargetTracked)
-                {
-                    GameController.Instance.eventHelicopter = true;
-                }
-                test.transform.localScale = new Vector3(20, 20, 20);
-                break;
-            default:
-                break;
+            GameController.Instance.isRescueInPlace = true;
+
+            // Prüfen welches Rettungsfahrzeug den Collider getriggert hat, indem geschaut wird, welcher FahrzeugMarker aktuell im Bild ist und getracked wird.
+            if (GameController.Instance.isFireCarTargetTracked)
+            {
+                GameController.Instance.eventFireCar = true;
+            }
+            else if (GameController.Instance.isHelicopterTargetTracked)
+            {
+                GameController.Instance.eventHelicopter = true;
+            }
+            else if (GameController.Instance.isPoliceTargetTracked)
+            {
+                GameController.Instance.eventPolice = true;
+            }
         }
+
 
     }
     private void OnTriggerExit(Collider other)
     {
-        switch (other.tag)
+        // FahrzeugMarker wird wieder weggenommen
+        // Flag das ein Fahrzeug gelegt wurde wird false gesetzt
+        // Die Events selbst werden nicht auf false gesetzt, das passiert bei den Eventskripten selbst, wenn diese fertig sind
+        if (other.tag == "RescueTarget")
         {
-            case "RescueTarget":
-                GameController.Instance.isRescueInPlace = false;
-                test.transform.localScale = new Vector3(1, 1, 1);
-                break;
-            default:
-                break;
+            GameController.Instance.isRescueInPlace = false;
         }
 
     }
