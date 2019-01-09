@@ -30,7 +30,9 @@ public class RescueCardTracker : MonoBehaviour, ITrackableEventHandler
 
             switch (gameObject.name)
             {
-                case "TargetFireCar":
+                case "TargetFireDepartment":
+                    Debug.Log("TargetFireDepartment _____ Position: " + gameObject.transform.position);
+                    gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.y);
                     GameController.Instance.isFireCarTargetTracked = true;
                     break;
                 case "TargetHelicopter":

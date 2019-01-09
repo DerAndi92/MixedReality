@@ -7,12 +7,15 @@ public class RescueTargetCollider : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+
+        Debug.Log("HEEEY ITS IIIN______");
         // Der Collider vom Parkplatz wird getriggert
-        if(other.tag == "RescueTarget")
+        if (other.tag == "RescueTarget")
         {
             GameController.Instance.isRescueInPlace = true;
+            Debug.Log("HEEEY ITS IIIN______2");
             // Prüfen welches Rettungsfahrzeug den Collider getriggert hat, indem geschaut wird, welcher FahrzeugMarker aktuell im Bild ist und getracked wird.
-            if (GameController.Instance.isFireCarTargetTracked && other.name == "TargetFireCar")
+            if (GameController.Instance.isFireCarTargetTracked && other.name == "TargetFireDepartment")
             {
                 GameController.Instance.eventFireCar = true;
             }

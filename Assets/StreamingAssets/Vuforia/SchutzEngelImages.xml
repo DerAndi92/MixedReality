@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig>
     <Tracking>
+        <ImageTarget name="CityTarget" size="50.000000 48.799999"/>
         <ImageTarget name="TestRTeset" size="50.000000 34.599998"/>
         <ImageTarget name="BombeTarget" size="25.000000 16.541666"/>
         <ImageTarget name="SturmTarget" size="25.000000 16.555183"/>
@@ -14,8 +15,58 @@
         <ImageTarget name="city250" size="250.000000 211.000000"/>
         <ImageTarget name="city10" size="10.000000 10.000000"/>
         <ImageTarget name="city500" size="500.000000 422.000000"/>
-        <ImageTarget name="testFeuerwehr.Left" size="30.000000 49.980000"/>
+        <ImageTarget name="FireDepSmall.Back" size="6.000000 8.792665"/>
+        <ImageTarget name="FireDepSmall.Top" size="6.000000 6.000000"/>
+        <ImageTarget name="FireDepSmall.Front" size="6.000000 8.792665"/>
+        <ImageTarget name="FireDepSmall.Right" size="6.000000 8.792665"/>
+        <ImageTarget name="FireDepSmall.Left" size="6.000000 8.792665"/>
+        <ImageTarget name="PoliceDepartment.Back" size="60.000000 87.926659"/>
+        <ImageTarget name="PoliceDepartment.Top" size="60.000000 60.000000"/>
+        <ImageTarget name="PoliceDepartment.Front" size="60.000000 87.926659"/>
+        <ImageTarget name="PoliceDepartment.Right" size="60.000000 87.926659"/>
+        <ImageTarget name="PoliceDepartment.Bottom" size="60.000000 60.000000"/>
+        <ImageTarget name="PoliceDepartment.Left" size="60.000000 87.926659"/>
+        <ImageTarget name="Fire-Department-Cube.Back" size="60.000000 87.926659"/>
+        <ImageTarget name="Fire-Department-Cube.Top" size="60.000000 60.000000"/>
+        <ImageTarget name="Fire-Department-Cube.Front" size="60.000000 87.926659"/>
+        <ImageTarget name="Fire-Department-Cube.Right" size="60.000000 87.926659"/>
+        <ImageTarget name="Fire-Department-Cube.Left" size="60.000000 87.926659"/>
+        <ImageTarget name="HeliLandeplatz.Back" size="60.000000 87.926659"/>
+        <ImageTarget name="HeliLandeplatz.Top" size="60.000000 60.000000"/>
+        <ImageTarget name="HeliLandeplatz.Front" size="60.000000 87.926659"/>
+        <ImageTarget name="HeliLandeplatz.Right" size="60.000000 87.926659"/>
+        <ImageTarget name="HeliLandeplatz.Left" size="60.000000 87.926659"/>
         <ImageTarget name="testFeuerwehr.Front" size="30.000000 49.980000"/>
+        <ImageTarget name="testFeuerwehr.Left" size="30.000000 49.980000"/>
+        <MultiTarget name="FireDepSmall">
+            <Part name="FireDepSmall.Left" translation="-3.0 0 0" rotation="AD: 0 1 0 -90"/>
+            <Part name="FireDepSmall.Right" translation="3.0 0 0" rotation="AD: 0 1 0 90"/>
+            <Part name="FireDepSmall.Front" translation="0 0 3.0" rotation="AD: 1 0 0 0"/>
+            <Part name="FireDepSmall.Back" translation="0 0 -3.0" rotation="AD: 0 1 0 180"/>
+            <Part name="FireDepSmall.Top" translation="0 4.400000095367432 0" rotation="AD: 1 0 0 -90"/>
+        </MultiTarget>
+        <MultiTarget name="PoliceDepartment">
+            <Part name="PoliceDepartment.Left" translation="-30.0 0 0" rotation="AD: 0 1 0 -90"/>
+            <Part name="PoliceDepartment.Right" translation="30.0 0 0" rotation="AD: 0 1 0 90"/>
+            <Part name="PoliceDepartment.Front" translation="0 0 30.0" rotation="AD: 1 0 0 0"/>
+            <Part name="PoliceDepartment.Back" translation="0 0 -30.0" rotation="AD: 0 1 0 180"/>
+            <Part name="PoliceDepartment.Top" translation="0 44.0 0" rotation="AD: 1 0 0 -90"/>
+            <Part name="PoliceDepartment.Bottom" translation="0 -44.0 0" rotation="AD: 1 0 0 90"/>
+        </MultiTarget>
+        <MultiTarget name="Fire-Department-Cube">
+            <Part name="Fire-Department-Cube.Left" translation="-30.0 0 0" rotation="AD: 0 1 0 -90"/>
+            <Part name="Fire-Department-Cube.Right" translation="30.0 0 0" rotation="AD: 0 1 0 90"/>
+            <Part name="Fire-Department-Cube.Front" translation="0 0 30.0" rotation="AD: 1 0 0 0"/>
+            <Part name="Fire-Department-Cube.Back" translation="0 0 -30.0" rotation="AD: 0 1 0 180"/>
+            <Part name="Fire-Department-Cube.Top" translation="0 44.0 0" rotation="AD: 1 0 0 -90"/>
+        </MultiTarget>
+        <MultiTarget name="HeliLandeplatz">
+            <Part name="HeliLandeplatz.Left" translation="-30.0 0 0" rotation="AD: 0 1 0 -90"/>
+            <Part name="HeliLandeplatz.Right" translation="30.0 0 0" rotation="AD: 0 1 0 90"/>
+            <Part name="HeliLandeplatz.Front" translation="0 0 30.0" rotation="AD: 1 0 0 0"/>
+            <Part name="HeliLandeplatz.Back" translation="0 0 -30.0" rotation="AD: 0 1 0 180"/>
+            <Part name="HeliLandeplatz.Top" translation="0 44.0 0" rotation="AD: 1 0 0 -90"/>
+        </MultiTarget>
         <MultiTarget name="testFeuerwehr">
             <Part name="testFeuerwehr.Left" translation="-15.0 0 0" rotation="AD: 0 1 0 -90"/>
             <Part name="testFeuerwehr.Front" translation="0 0 15.0" rotation="AD: 1 0 0 0"/>

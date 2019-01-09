@@ -27,7 +27,6 @@ public class EventTrafficStop : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("TRIGGERD____");
         if(GameController.Instance.isTrafficStopped) {
             Waypoints wp = other.GetComponent<Waypoints>();
             if (wp != null)
