@@ -2,11 +2,13 @@
 using UnityEngine.Playables;
 using System.Collections;
 using Vuforia;
+using System.Linq;
 
 public class ActionCardTracker : MonoBehaviour, ITrackableEventHandler
 {
 
     private TrackableBehaviour mTrackableBehaviour;
+    private AudioSource activationSound;
 
     // DIESES SKRIPT WIRD AUF JEDEM ACTION CARD MARKER AUSGEFÜHRT
     void Start()
@@ -16,6 +18,9 @@ public class ActionCardTracker : MonoBehaviour, ITrackableEventHandler
         {
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
         }
+
+        activationSound = GameObject.Find("ActivationSound").GetComponent<AudioSource>();
+        activationSound.Stop();
     }
 
     public void OnTrackableStateChanged(TrackableBehaviour.Status previousStatus, TrackableBehaviour.Status newStatus)
@@ -25,30 +30,46 @@ public class ActionCardTracker : MonoBehaviour, ITrackableEventHandler
             newStatus == TrackableBehaviour.Status.TRACKED)
         {
 
+            string invokeEvent = "";
+
             // Prüfen ob der Marker zu einem der Events gehört
             // Falls ja wird der Flag gesetzt, dass es getracked wird
-            // Außerdem wird das Event gestartet, wodurch die Event Skripte aktiv werden, die darauf warten, dass der Flag gesetzt wird
+            // Prüfen ob das Event abgesielt werden soll. Falls ja wird der Name der Startmethode in invokeEvent geschrieben
             switch (gameObject.name)
             {
                 case "TargetFire":
                     GameController.Instance.isFireTargetTracked = true;
-                    GameController.Instance.eventFire = true;
+                    if (!GameController.Instance.eventFire)
+                        invokeEvent = "startFireEvent";
                     break;
+
                 case "TargetUfo":
                     GameController.Instance.isUfoTargetTracked = true;
-                    GameController.Instance.eventUfo = true;
+                    if (!GameController.Instance.eventUfo)
+                        invokeEvent = "startUfoEvent";
                     break;
+
                 case "TargetTornado":
                     GameController.Instance.isTornadoTargetTracked = true;
-                    GameController.Instance.eventTornado = true;
+                    if(!GameController.Instance.eventTornado && !GameController.Instance.eventTornadoDone)
+                        invokeEvent = "startTornadoEvent";
                     break;
+
                 case "TargetBomb":
                     GameController.Instance.isBombTargetTracked = true;
+                    if (!GameController.Instance.eventBomb)
+                        invokeEvent = "startBombEvent";
                     break;
+
                 default:
                     break;
             }
 
+            // Sound abspielen und Event danach aktivieren, wenn das Event gestartet werden soll!
+            if (invokeEvent != "") {
+                activationSound.Play();
+                Invoke(invokeEvent, activationSound.clip.length);
+            }
 
         }
 
@@ -80,5 +101,24 @@ public class ActionCardTracker : MonoBehaviour, ITrackableEventHandler
         }
     }
 
+    void startFireEvent()
+    {
+        GameController.Instance.eventFire = true;
+    }
+
+    void startUfoEvent()
+    {
+        GameController.Instance.eventUfo = true;
+    }
+
+    void startTornadoEvent()
+    {
+        GameController.Instance.eventTornado = true;
+    }
+
+    void startBombEvent()
+    {
+        GameController.Instance.eventBomb = true;
+    }
 
 }

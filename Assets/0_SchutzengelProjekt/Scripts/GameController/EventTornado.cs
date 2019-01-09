@@ -13,10 +13,12 @@ public class EventTornado : MonoBehaviour
     private Light light;
     private float lightStart;
 
+    private AudioSource audioTornado;
+    private AudioSource audioTornadoScream;
+
     private bool peopleRan = false;
     private bool tornadoBuilt = false;
     private bool lightDim = false;
-    private bool done = false;
     private float timer = 0;
 
     // Start is called before the first frame update
@@ -24,9 +26,15 @@ public class EventTornado : MonoBehaviour
     {
         tornado = GameObject.Find("TornadoObject");
         light = GameObject.Find("Directional Light").GetComponent<Light>();
-        lightStart = light.intensity;
         swimmingWaypoints = GameObject.Find("Swimming_Waypoints_Tornado").GetComponent<Waypoints>();
         tornadoParticle = tornado.GetComponent<ParticleSystem>();
+
+        audioTornado = GameObject.Find("AudioTornado").GetComponent<AudioSource>();
+        audioTornadoScream = GameObject.Find("AudioTornadoScream").GetComponent<AudioSource>();
+        audioTornado.Stop();
+        audioTornadoScream.Stop();
+
+        lightStart = light.intensity;
         tornadoParticle.Pause(true);
     }
 
@@ -34,12 +42,13 @@ public class EventTornado : MonoBehaviour
     void Update()
     {
 
-        if (!done && GameController.Instance.eventTornado)
+        if (!GameController.Instance.eventTornadoDone && GameController.Instance.eventTornado)
         {
 
             // Wenn gestartet, wird das Licht gedimmt
             if (!lightDim)
             {
+                if(!audioTornado.isPlaying) audioTornado.Play();
                 if (light.intensity >= 0.1)
                     light.intensity -= Time.deltaTime * 0.4f;
                 else
@@ -47,17 +56,17 @@ public class EventTornado : MonoBehaviour
             }
 
             // Wenn Licht gedimmt, wird Tornado aufgebaut
-            if (lightDim && !tornadoBuilt) {
+            else if (lightDim && !tornadoBuilt) {
                 tornadoParticle.Play(true);
                 tornado.GetComponent<Waypoints>().isMoving = true;
                 tornado.GetComponent<TornadoDestroyer>().start = true;
-
+                
                 tornadoBuilt = true;
                 timer = 0;
             }
 
             // Nach einer Sekunde laufen die Leute weg 
-            if(!peopleRan && tornadoBuilt && timer > 1 )
+            else if(!peopleRan && tornadoBuilt && timer > 1 )
             {
                 // Chillende Leute rennen weg
                 foreach (GameObject p in runningPeople)
@@ -77,31 +86,30 @@ public class EventTornado : MonoBehaviour
                     p.GetComponent<Waypoints>().changeWaypoints(swimmingWaypoints.waypoints, swimmingWaypoints.rotations, swimmingWaypoints.speed, true, false, false, true);
                 }
 
-                
+                audioTornadoScream.Play();
                 peopleRan = true;
                 timer = 0;
             }
 
-            if(peopleRan && !GameObject.Find("TornadoObject"))
+            else if(peopleRan && !GameObject.Find("TornadoObject"))
             {
                 if (light.intensity < lightStart)
                 {
                     light.intensity += Time.deltaTime * 0.4f;
                 }
                 else
-                { 
-                    done = true;
+                {
+                    GameController.Instance.eventTornadoDone = true;
                     GameController.Instance.eventTornado = false;
+                    audioTornado.Stop();
                 }
             }
-            
-        }
 
 
-        if (!done)
-        {
-            timer += Time.deltaTime;
+            if (!GameController.Instance.eventTornadoDone)
+            {
+                timer += Time.deltaTime;
+            }
         }
-        
     }
 }

@@ -44,7 +44,10 @@ public class EventFireCar : MonoBehaviour {
         {
             if(!isFireCarPrepared) {
                 Debug.Log("_______Prepare FireCar");
-                PrepareFireCar();
+
+                GameController.Instance.isTrafficStopped = true;
+                GameController.Instance.eventTrafficLightsInactive = true;
+                Invoke("PrepareFireCar", 2);
             }
             if (GameController.Instance.eventFire && !GameController.Instance.isFireCleared)
             {
@@ -132,6 +135,7 @@ public class EventFireCar : MonoBehaviour {
         waypointsFireCar.current = 0;
         isFireCarPrepared = true;
         waypointsFireCar.isMoving = true;
+        Invoke("StopTrafficStopper", 3);
     }
 
     void ResetFireCar()
@@ -139,6 +143,8 @@ public class EventFireCar : MonoBehaviour {
         GameController.Instance.eventFireCar = false;
         GameController.Instance.eventFire = false;
         GameController.Instance.isFireCleared = false;
+        GameController.Instance.eventTrafficLightsInactive = false;
+
         isFireCarAtPosition = false;
         isWaterThrower = false;
         fireCar.SetActive(false);
@@ -146,6 +152,11 @@ public class EventFireCar : MonoBehaviour {
         isFireCarPrepared = false;
         timer = 0;
         isSireneOn = false;
+    }
+
+    void StopTrafficStopper()
+    {
+        GameController.Instance.isTrafficStopped = false;
     }
 
 }

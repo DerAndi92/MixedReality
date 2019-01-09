@@ -5,8 +5,12 @@ using UnityEngine;
 public class GameController : MonoBehaviour {
 
     public List<MonoBehaviour> eventSubscribedScripts = new List<MonoBehaviour>();
+    public bool isCityTracked = false;
     public bool isEventInPlace = false;
     public bool isRescueInPlace = false;
+
+    public bool isTrafficStopped = false;
+    public bool eventTrafficLightsInactive = false;
 
     public bool isFireTargetTracked = false;
     public bool isUfoTargetTracked = false;
@@ -30,11 +34,14 @@ public class GameController : MonoBehaviour {
 
     // Event Tornado
     public bool eventTornado = false;
+    public bool eventTornadoDone = false;
 
     // Event Bomb & Police
     public bool eventBomb = false;
     public bool eventPolice = false;
 
+    // Event Reset
+    public bool eventReset = false;
 
     public bool finalExplosion = false;
     private static GameController instance;

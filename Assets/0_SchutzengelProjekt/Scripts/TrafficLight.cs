@@ -5,7 +5,7 @@ using System.Linq;
 
 public class TrafficLight : MonoBehaviour {
 
-    public float checkInterval = 5;
+    public float checkInterval = 3;
 
     private bool redForCar = false;
     private float delta = 0;
@@ -73,11 +73,13 @@ public class TrafficLight : MonoBehaviour {
         }
         else if(!redForCar && people.Count() > 0)
         {
-            redForCar = true;
-            foreach (Collider p in people)
-            {
-                p.GetComponent<Waypoints>().isMoving = true;
-                p.GetComponent<Moveit>().start();
+            if(!GameController.Instance.eventTrafficLightsInactive) { //Wenn Event aktiv, sollen keine Ampeln für Autos auf rot gehen!
+                redForCar = true;
+                foreach (Collider p in people)
+                {
+                    p.GetComponent<Waypoints>().isMoving = true;
+                    p.GetComponent<Moveit>().start();
+                }
             }
         }
 
