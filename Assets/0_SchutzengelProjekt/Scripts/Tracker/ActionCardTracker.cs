@@ -39,7 +39,7 @@ public class ActionCardTracker : MonoBehaviour, ITrackableEventHandler
             {
                 case "TargetFire":
                     GameController.Instance.isFireTargetTracked = true;
-                    if (!GameController.Instance.eventFire)
+                    if (!GameController.Instance.eventFire && !GameController.Instance.eventFireDone)
                         invokeEvent = "startFireEvent";
                     break;
 

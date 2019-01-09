@@ -11,17 +11,16 @@ public class RescueTargetCollider : MonoBehaviour
         if(other.tag == "RescueTarget")
         {
             GameController.Instance.isRescueInPlace = true;
-
             // Prüfen welches Rettungsfahrzeug den Collider getriggert hat, indem geschaut wird, welcher FahrzeugMarker aktuell im Bild ist und getracked wird.
-            if (GameController.Instance.isFireCarTargetTracked)
+            if (GameController.Instance.isFireCarTargetTracked && other.name == "TargetFireCar")
             {
                 GameController.Instance.eventFireCar = true;
             }
-            else if (GameController.Instance.isHelicopterTargetTracked)
+            else if (GameController.Instance.isHelicopterTargetTracked && other.name == "TargetHelicopter")
             {
                 GameController.Instance.eventHelicopter = true;
             }
-            else if (GameController.Instance.isPoliceTargetTracked)
+            else if (GameController.Instance.isPoliceTargetTracked && other.name == "TargetPolizei")
             {
                 GameController.Instance.eventPolice = true;
             }

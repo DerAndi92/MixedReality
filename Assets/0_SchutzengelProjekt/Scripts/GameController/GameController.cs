@@ -21,6 +21,7 @@ public class GameController : MonoBehaviour {
     public bool isPoliceTargetTracked = false;
 
     // Event Fire & FireCar
+    public bool eventFireDone = false;
     public bool eventFire = false;
     public bool eventFireCar = false;
     public bool isFireCleared = false;

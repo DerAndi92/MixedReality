@@ -27,23 +27,22 @@ public class RescueCardTracker : MonoBehaviour, ITrackableEventHandler
             // Prüfen ob der Marker zu einem der Resuce Events gehört
             // Falls ja wird der Flag gesetzt, dass es getracked wird
             // Als nächstes muss der Marker noch in den Collider für die Rescue Events gehalten werden, damit das Event startet (siehe RescueTargetCollider Skript)
-            if (GameController.Instance.isEventInPlace)
+
+            switch (gameObject.name)
             {
-                switch (gameObject.name)
-                {
-                    case "TargetFireCar":
-                        GameController.Instance.isFireCarTargetTracked = true;
-                        break;
-                    case "TargetHelicopter":
-                        GameController.Instance.isHelicopterTargetTracked = true;
-                        break;
-                    case "TargetPolizei":
-                        GameController.Instance.isPoliceTargetTracked = true;
-                        break;
-                    default:
-                        break;
-                }
+                case "TargetFireCar":
+                    GameController.Instance.isFireCarTargetTracked = true;
+                    break;
+                case "TargetHelicopter":
+                    GameController.Instance.isHelicopterTargetTracked = true;
+                    break;
+                case "TargetPolizei":
+                    GameController.Instance.isPoliceTargetTracked = true;
+                    break;
+                default:
+                    break;
             }
+
         
         }
 
