@@ -7,7 +7,7 @@ public class EventHelicopter : MonoBehaviour
 
     private GameObject helicopter;
     private GameObject ufo;
-    private GameObject landingPosition;
+    private Vector3 landingPosition;
     private GameObject heliNoEventPoint;
 
     private Animator helicopterAnimator;
@@ -27,13 +27,13 @@ public class EventHelicopter : MonoBehaviour
     {
         helicopter = GameObject.Find("Helicopter");
         ufo = GameObject.Find("Ufo");
-        landingPosition = GameObject.Find("HelicopterLandingPoint");
+        landingPosition = helicopter.transform.position;
         heliNoEventPoint = GameObject.Find("HeliNoEventPoint");
         helicopter.SetActive(false);
         helicopterAnimator = helicopter.GetComponent<Animator>();
         helicopterAnimator.speed = 0;
-        heliStartPosition = new Vector3(helicopter.transform.position.x, helicopter.transform.position.y + 40, helicopter.transform.position.z);
-        heliLookAtPoint = new Vector3(helicopter.transform.position.x + 30, helicopter.transform.position.y + 40, helicopter.transform.position.z);
+        heliStartPosition = new Vector3(helicopter.transform.position.x, helicopter.transform.position.y + 10, helicopter.transform.position.z);
+        heliLookAtPoint = new Vector3(helicopter.transform.position.x + 20, helicopter.transform.position.y + 10, helicopter.transform.position.z);
         timer = 0;
     }
 
@@ -42,30 +42,40 @@ public class EventHelicopter : MonoBehaviour
     {
         if (GameController.Instance.eventHelicopter)
         {
-            if(!isHeliPrepared) {
-                helicopter.SetActive(true);
-                helicopterAnimator.speed = 1;
-                isHeliPrepared = true;
-                if ( GameController.Instance.eventUfo)
-                {
-                    heliOnEvent = "ufo";
+            if (!isHeliPrepared) {
+                if (GameController.Instance.heliPosition != null) { 
+                    helicopter.transform.position = GameController.Instance.heliPosition.transform.position;
+                    heliStartPosition = new Vector3(helicopter.transform.position.x, helicopter.transform.position.y + 10, helicopter.transform.position.z);
+                    heliLookAtPoint = new Vector3(helicopter.transform.position.x + 20, helicopter.transform.position.y + 10, helicopter.transform.position.z);
+                    landingPosition = helicopter.transform.position;
                 }
                 else
-                {
+                    helicopter.transform.position = new Vector3(-123.1f, 34.8f, 22);
+                helicopter.SetActive(true);
+                helicopterAnimator.speed = 1;
+                if (GameController.Instance.eventUfo)
+                    heliOnEvent = "ufo";
+                else
                     heliOnEvent = "noEvent";
+                if (timer < 2) { 
+                    timerUpdate();
                 }
-            }
-            if (GameController.Instance.eventUfo && heliOnEvent == "ufo")
+                else { 
+                    timer = 0;
+                    isHeliPrepared = true;
+                }
+
+            } else if (GameController.Instance.eventUfo && heliOnEvent == "ufo")
             {
                 if ((heliStartPosition.y - helicopter.transform.position.y) >= 1 && !isHeliStarted)
                 {
-                    helicopter.transform.position = Vector3.MoveTowards(helicopter.transform.position, heliStartPosition, Time.deltaTime * 10);
+                    helicopter.transform.position = Vector3.MoveTowards(helicopter.transform.position, heliStartPosition, Time.deltaTime * 6);
                 }
                 else
                 {
                     isHeliStarted = true;
 
-                    if (Vector3.Distance(helicopter.transform.position, ufo.transform.position) > 20 && !GameController.Instance.ufoIsShot)
+                    if (Vector3.Distance(helicopter.transform.position, ufo.transform.position) > 10 && !GameController.Instance.ufoIsShot)
                     {
 
                         helicopter.transform.position = Vector3.MoveTowards(helicopter.transform.position, ufo.transform.position, Time.deltaTime * 10);
@@ -90,7 +100,7 @@ public class EventHelicopter : MonoBehaviour
             {
                 if ((heliStartPosition.y - helicopter.transform.position.y) >= 1 && !isHeliStarted)
                 {
-                    helicopter.transform.position = Vector3.MoveTowards(helicopter.transform.position, heliStartPosition, Time.deltaTime * 10);
+                    helicopter.transform.position = Vector3.MoveTowards(helicopter.transform.position, heliStartPosition, Time.deltaTime * 6);
                 }
                 else
                 {
@@ -130,8 +140,8 @@ public class EventHelicopter : MonoBehaviour
         if (Vector3.Distance(helicopter.transform.position, heliStartPosition) < 1 || isHeliLanding)
         {
             isHeliLanding = true;
-            helicopter.transform.position = Vector3.MoveTowards(helicopter.transform.position, landingPosition.transform.position, Time.deltaTime * 10);
-            if (Vector3.Distance(helicopter.transform.position, landingPosition.transform.position) < 1)
+            helicopter.transform.position = Vector3.MoveTowards(helicopter.transform.position, landingPosition, Time.deltaTime * 6);
+            if (Vector3.Distance(helicopter.transform.position, landingPosition) < 1)
             {
                 GameController.Instance.eventHelicopter = false;
                 isHeliStarted = false;

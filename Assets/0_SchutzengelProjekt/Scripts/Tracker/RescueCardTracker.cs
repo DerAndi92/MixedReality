@@ -35,10 +35,10 @@ public class RescueCardTracker : MonoBehaviour, ITrackableEventHandler
                     gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.y);
                     GameController.Instance.isFireCarTargetTracked = true;
                     break;
-                case "TargetHelicopter":
+                case "TargetHeliLandingPlace":
                     GameController.Instance.isHelicopterTargetTracked = true;
                     break;
-                case "TargetPolizei":
+                case "TargetPoliceDepartment":
                     GameController.Instance.isPoliceTargetTracked = true;
                     break;
                 default:
@@ -58,13 +58,13 @@ public class RescueCardTracker : MonoBehaviour, ITrackableEventHandler
             // Die Events selbst werden nicht auf false gesetzt, das passiert bei den Eventskripten selbst, wenn diese fertig sind
             switch (gameObject.name)
             {
-                case "TargetFireCar":
+                case "TargetFireDepartment":
                     GameController.Instance.isFireCarTargetTracked = false;
                     break;
-                case "TargetHelicopter":
+                case "TargetHeliLandingPlace":
                     GameController.Instance.isHelicopterTargetTracked = false;
                     break;
-                case "TargetPolizei":
+                case "TargetPoliceDepartment":
                     GameController.Instance.isPoliceTargetTracked = false;
                     break;
                 default:

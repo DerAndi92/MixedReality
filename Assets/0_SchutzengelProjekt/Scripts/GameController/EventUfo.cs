@@ -9,6 +9,7 @@ public class EventUfo : MonoBehaviour
     private GameObject currentObject;
     private GameObject startPosition;
     private GameObject endPosition;
+    private GameObject spotLight;
     private GameObject[] objects;
 
     private AudioSource ufoAbsorbAudio;
@@ -40,7 +41,7 @@ public class EventUfo : MonoBehaviour
         ufo = GameObject.Find("Ufo");
         startPosition = GameObject.Find("UfoStartPoint");
         endPosition = GameObject.Find("UfoEndPoint");
-
+        spotLight = GameObject.Find("UfoSpotLight");  
         explosionUfo1 = GameObject.Find("Ufo_Explosion1").GetComponent<ParticleSystem>();
         explosionUfo1.Stop();
         explosionUfo2 = GameObject.Find("Ufo_Explosion2").GetComponent<ParticleSystem>();
@@ -136,6 +137,7 @@ public class EventUfo : MonoBehaviour
                         explosion2Audio.Play();
                         ufo.transform.localScale = new Vector3(0, 0, 0);
                         ufoBackgroundAudio.Stop();
+                        spotLight.SetActive(false);
                     }
 
                 }

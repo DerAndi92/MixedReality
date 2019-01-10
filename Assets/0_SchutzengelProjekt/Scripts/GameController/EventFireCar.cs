@@ -70,7 +70,6 @@ public class EventFireCar : MonoBehaviour {
                     {
                         if (Vector3.Distance(fireCar.transform.position, GameController.Instance.fireCarStopAtWaypoint.transform.position) < 0.5)
                         {
-                            Debug.Log("_______Position FireCar");
                             isFireCarAtFireClearingPosition = true;
                             waypointsFireCar.isMoving = false;
                         }
@@ -80,7 +79,6 @@ public class EventFireCar : MonoBehaviour {
                     // Wasserwerfer starten
                     if (!isWaterThrower)
                     {
-                        Debug.Log("_______Water FireCar");
                         ActivateWaterThrower();
                     }
                     else
@@ -88,7 +86,6 @@ public class EventFireCar : MonoBehaviour {
                         TimerUpdate();
                         if (timer > 3)
                         {
-                            Debug.Log("_______DeWater FireCar");
                             DeactivateWaterThrower();
                         }
                     }
@@ -99,7 +96,6 @@ public class EventFireCar : MonoBehaviour {
             {
                 if (Vector3.Distance(fireCar.transform.position, endWayPoint.transform.position) < 1)
                 {
-                    Debug.Log("_______Reset FireCar");
                     ResetFireCar();
                 }
             }
@@ -113,7 +109,10 @@ public class EventFireCar : MonoBehaviour {
 
     void ActivateWaterThrower()
     {
-        if (GameController.Instance.isWaterThrowerRight)
+        if(GameController.Instance.fireCarStopAtWaypoint.name == "wayPoint_AutoRepair")
+        {
+            waterThrowerGameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+        } else if (GameController.Instance.isWaterThrowerRight)
         {
             waterThrowerGameObject.transform.rotation = Quaternion.Euler(0, 90, 0);
         }
