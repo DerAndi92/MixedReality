@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,6 +48,8 @@ public class GameController : MonoBehaviour {
 
     // Event Reset
     public bool eventReset = false;
+    public int waitToNextReset = 5;
+    public Int32 resetTime = 0;
 
     public bool finalExplosion = false;
     private static GameController instance;

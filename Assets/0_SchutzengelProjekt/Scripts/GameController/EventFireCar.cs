@@ -111,14 +111,14 @@ public class EventFireCar : MonoBehaviour {
     {
         if(GameController.Instance.fireCarStopAtWaypoint.name == "wayPoint_AutoRepair")
         {
-            waterThrowerGameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+            waterThrowerGameObject.transform.rotation = Quaternion.Euler(0, 0, 47);
         } else if (GameController.Instance.isWaterThrowerRight)
         {
-            waterThrowerGameObject.transform.rotation = Quaternion.Euler(0, 90, 0);
+            waterThrowerGameObject.transform.rotation = Quaternion.Euler(0, 90, 47);
         }
         else
         {
-            waterThrowerGameObject.transform.rotation = Quaternion.Euler(0, -90, 0);
+            waterThrowerGameObject.transform.rotation = Quaternion.Euler(0, -90, 47);
         }
         waterThrowerGameObject.transform.position = fireCar.transform.position;
         waterThrowerParticleSystem.Play();
