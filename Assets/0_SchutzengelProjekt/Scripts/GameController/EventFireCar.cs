@@ -161,9 +161,6 @@ public class EventFireCar : MonoBehaviour {
         fireCar.SetActive(false);
         isSireneOn = false;
         isFireCarPrepared = false;
-       
-
-
     }
 
     void StopTrafficStopper()

@@ -29,6 +29,7 @@ public class CityTracker : MonoBehaviour, ITrackableEventHandler
 
     protected virtual void Start()
     {
+        OnTrackingLost();
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
         if (mTrackableBehaviour)
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
@@ -103,6 +104,7 @@ public class CityTracker : MonoBehaviour, ITrackableEventHandler
         // Disable rendering:
         foreach (var component in rendererComponents)
             component.enabled = false;
+
     }
 
     #endregion // PROTECTED_METHODS

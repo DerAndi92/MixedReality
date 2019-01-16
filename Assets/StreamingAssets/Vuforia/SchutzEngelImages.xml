@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig>
     <Tracking>
-        <ImageTarget name="marker_omega_tornado" size="13.500000 9.972744"/>
-        <ImageTarget name="marker_sigma_feuer" size="13.500000 9.972744"/>
-        <ImageTarget name="marker_x_reset" size="10.000000 10.000000"/>
+        <ImageTarget name="HeliDepartment-top-final" size="6.000000 6.000000"/>
+        <ImageTarget name="FireDepartment-top" size="6.000000 6.000000"/>
+        <ImageTarget name="PoliceDepartment-top" size="6.000000 6.000000"/>
+        <ImageTarget name="city-marker" size="50.000000 50.000000"/>
+        <ImageTarget name="1testBilf5" size="50.000000 50.000000"/>
         <ImageTarget name="marker_alpha_ufo" size="13.500000 9.972744"/>
+        <ImageTarget name="marker_sigma_feuer" size="13.500000 9.972744"/>
         <ImageTarget name="marker_theta_bombe" size="13.500000 9.972744"/>
+        <ImageTarget name="marker_omega_tornado" size="13.500000 9.972744"/>
+        <ImageTarget name="marker_x_reset" size="10.000000 10.000000"/>
+        <ImageTarget name="HeliDepartment-top" size="10.000000 10.000000"/>
         <ImageTarget name="CityTarget" size="50.000000 48.799999"/>
         <ImageTarget name="city50" size="50.000000 42.200001"/>
         <ImageTarget name="Rescue_HelicopterLandingPlace.Back" size="6.000000 8.792665"/>
