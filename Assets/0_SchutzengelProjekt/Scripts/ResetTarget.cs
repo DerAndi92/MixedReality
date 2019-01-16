@@ -112,11 +112,14 @@ public class ResetTarget : MonoBehaviour, ITrackableEventHandler
                 GameController.Instance.isBombTargetTracked = false;
                 GameController.Instance.isPoliceTargetTracked = false;
 
+
                 // Event Fire & FireCar
                 GameController.Instance.eventFire = false;
                 GameController.Instance.eventFireCar = false;
                 GameController.Instance.isFireCleared = false;
                 GameController.Instance.isWaterThrowerRight = false;
+                GameController.Instance.eventFireDone = false;
+
 
                 // Event Ufo & Heli
                 GameController.Instance.eventUfo = false;

@@ -104,7 +104,7 @@ public class EventUfo : MonoBehaviour
                                 ufoAbsorbAudio.Play(0);
                                 isSoundPlaying = true;
                             }
-                            currentObject.transform.position = Vector3.MoveTowards(currentObject.transform.position, ufo.transform.position, 1.5f);
+                            currentObject.transform.position = Vector3.MoveTowards(currentObject.transform.position, ufo.transform.position, 1f);
                             if ((ufo.transform.position.y - currentObject.transform.position.y) < 0.5) {
                                 Debug.Log("Aufgesaugt");
                                 isObjectPrepared = false;
