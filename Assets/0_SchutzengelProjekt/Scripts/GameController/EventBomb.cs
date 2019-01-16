@@ -8,8 +8,8 @@ public class EventBomb : MonoBehaviour
     public GameObject[] bombs;
     public GameObject[] hostlies;
 
-    public GameObject mallComplete;
-    public GameObject mallBurned;
+    private GameObject mallComplete;
+    private GameObject mallBurned;
 
     private bool thiefsRun = false;
     private bool hostileRun = false;
