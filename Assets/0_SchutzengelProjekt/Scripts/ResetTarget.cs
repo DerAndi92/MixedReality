@@ -132,7 +132,9 @@ public class ResetTarget : MonoBehaviour, ITrackableEventHandler
 
                 // Event Bomb & Police
                 GameController.Instance.eventBomb = false;
+                GameController.Instance.eventBombPlaced = 0;
                 GameController.Instance.eventPolice = false;
+                GameController.Instance.eventBombDone = false;
             }
         }
     }

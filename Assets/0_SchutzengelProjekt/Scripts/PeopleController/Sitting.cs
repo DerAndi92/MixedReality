@@ -32,5 +32,6 @@ public class Sitting : MonoBehaviour
         this.animator.SetBool("Static_b", true);
         this.animator.SetInteger("Animation_int", 9);
         this.animator.SetInteger("WeaponType_int", 0);
+        this.animator.SetBool("Crouch_b", false);
     }
 }

@@ -57,7 +57,7 @@ public class ActionCardTracker : MonoBehaviour, ITrackableEventHandler
 
                 case "TargetBomb":
                     GameController.Instance.isBombTargetTracked = true;
-                    if (!GameController.Instance.eventBomb)
+                    if (!GameController.Instance.eventBomb && !GameController.Instance.eventBombDone)
                         invokeEvent = "startBombEvent";
                     break;
 

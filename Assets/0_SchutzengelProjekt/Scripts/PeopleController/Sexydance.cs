@@ -32,5 +32,6 @@ public class Sexydance : MonoBehaviour
         this.animator.SetBool("Grounded", true);
         this.animator.SetBool("Static_b", false);
         this.animator.SetInteger("WeaponType_int", 0);
+        this.animator.SetBool("Crouch_b", false);
     }
 }

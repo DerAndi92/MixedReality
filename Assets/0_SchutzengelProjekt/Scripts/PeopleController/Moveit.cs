@@ -30,6 +30,7 @@ public class Moveit: MonoBehaviour {
         this.animator.SetBool("Grounded", true);
         this.animator.SetBool("Static_b", true);
         this.animator.SetInteger("Animation_int", 0);
+        this.animator.SetBool("Crouch_b", false);
         this.animator.SetInteger("WeaponType_int", 0);
     }
 

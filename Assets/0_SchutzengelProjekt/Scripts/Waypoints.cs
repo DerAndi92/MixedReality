@@ -56,11 +56,7 @@ public class Waypoints : MonoBehaviour
                         if (current >= waypoints.Length)
                         {
                             // Reached last waypoint. What now? Vanish? Go Backward? Repeat it? Or nothing?
-                            if (vanish)
-                            {
-                                Destroy(transform.gameObject);
-                            }
-                            else if (backward)
+                            if (backward)
                             {
                                 transform.Rotate(0, 180, 0);
                                 isBackward = true;
@@ -69,6 +65,10 @@ public class Waypoints : MonoBehaviour
                             else if (repeat)
                             {
                                 current = 0;
+                            }
+                            else if (vanish)
+                            {
+                                Destroy(transform.gameObject);
                             }
                             else
                             {
@@ -92,6 +92,10 @@ public class Waypoints : MonoBehaviour
                                 current = 0;
                                 transform.Rotate(0, 180, 0);
                                 isBackward = false;
+                            }
+                            else if (vanish)
+                            {
+                                Destroy(transform.gameObject);
                             }
                             else
                             {
@@ -146,6 +150,15 @@ public class Waypoints : MonoBehaviour
     public void resetActualSpeed()
     {
         this.acutalSpeed = speed;
+    }
+
+    public void goBack()
+    {
+        if(!isBackward) { 
+            transform.Rotate(0, 180, 0);
+            isBackward = true;
+            current -= 1;
+        }
     }
 
     public void changeWaypoints(GameObject[] new_waypoints, float[] New_rotations, float new_speed, bool new_isMoving, bool new_repeat, bool new_backward, bool new_vanish)

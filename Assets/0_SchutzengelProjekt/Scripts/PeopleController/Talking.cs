@@ -15,6 +15,7 @@ public class Talking : MonoBehaviour {
             this.animator.SetBool("Grounded", true);
             this.animator.SetBool("Static_b", true);
             this.animator.SetInteger("Animation_int", activeAnimation);
+            this.animator.SetBool("Crouch_b", false);
         }
     }
 	

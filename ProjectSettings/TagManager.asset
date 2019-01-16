@@ -11,6 +11,7 @@ TagManager:
   - RescueTarget
   - EventTarget
   - Tornado_Object
+  - bombThief
   layers:
   - Default
   - TransparentFX

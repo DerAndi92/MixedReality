@@ -40,7 +40,9 @@ public class GameController : MonoBehaviour {
 
     // Event Bomb & Police
     public bool eventBomb = false;
+    public short eventBombPlaced = 0;
     public bool eventPolice = false;
+    public bool eventBombDone = false;
 
     // Event Reset
     public bool eventReset = false;
