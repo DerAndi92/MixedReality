@@ -29,6 +29,7 @@ public class GameController : MonoBehaviour {
     public GameObject fireCarStopAtWaypoint;
 
     // Event Ufo & Heli
+    public bool eventUfoDone = false;
     public bool eventUfo = false;
     public bool eventHelicopter = false;
     public bool ufoIsShot = false;

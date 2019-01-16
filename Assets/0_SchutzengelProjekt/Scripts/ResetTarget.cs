@@ -122,6 +122,7 @@ public class ResetTarget : MonoBehaviour, ITrackableEventHandler
 
 
                 // Event Ufo & Heli
+                GameController.Instance.eventUfoDone = false;
                 GameController.Instance.eventUfo = false;
                 GameController.Instance.eventHelicopter = false;
                 GameController.Instance.ufoIsShot = false;

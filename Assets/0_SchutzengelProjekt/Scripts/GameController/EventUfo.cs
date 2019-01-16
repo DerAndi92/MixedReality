@@ -16,7 +16,7 @@ public class EventUfo : MonoBehaviour
     private AudioSource ufoBackgroundAudio;
     private AudioSource explosion1Audio;
     private AudioSource explosion2Audio;
-   
+    private AudioSource objectSound;
     private int current;
     private int speed;
     private float distance;
@@ -87,14 +87,16 @@ public class EventUfo : MonoBehaviour
                     if (current < objects.Length) {
                         if(!isObjectPrepared) {
                             currentObject = objects[current];
+                            objectSound = currentObject.GetComponent<AudioSource>();
+                            
                             isObjectPrepared = true;
                         }
                         distance = Vector2.Distance(new Vector2(ufo.transform.position.x, ufo.transform.position.z), new Vector2(currentObject.transform.position.x, currentObject.transform.position.z));
                         Vector3 ufoNewPosition = new Vector3(currentObject.transform.position.x, ufo.transform.position.y, currentObject.transform.position.z);
                         if(distance > 3) {
-                            speed = 10;
+                            speed = 6;
                         } else {
-                            speed = 5;
+                            speed = 2;
                         } 
                         ufo.transform.position = Vector3.MoveTowards(ufo.transform.position, ufoNewPosition, Time.deltaTime * speed);
 
@@ -103,8 +105,11 @@ public class EventUfo : MonoBehaviour
                             {
                                 ufoAbsorbAudio.Play(0);
                                 isSoundPlaying = true;
+                                if(objectSound != null) {
+                                    objectSound.Play();
+                                }
                             }
-                            currentObject.transform.position = Vector3.MoveTowards(currentObject.transform.position, ufo.transform.position, 1f);
+                            currentObject.transform.position = Vector3.MoveTowards(currentObject.transform.position, ufo.transform.position, 0.5f);
                             if ((ufo.transform.position.y - currentObject.transform.position.y) < 0.5) {
                                 Debug.Log("Aufgesaugt");
                                 isObjectPrepared = false;

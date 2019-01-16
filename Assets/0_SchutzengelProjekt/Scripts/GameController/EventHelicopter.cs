@@ -19,12 +19,16 @@ public class EventHelicopter : MonoBehaviour
     private bool isHeliLanding = false;
     private bool isHeliPrepared = false;
     private bool isHeliLooking = false;
+    private bool isHeliPrePrepared = false;
+
     private string heliOnEvent = "";
+    private AudioSource heliSound;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        heliSound = GameObject.Find("HelicopterAudio").GetComponent<AudioSource>();
         helicopter = GameObject.Find("Helicopter");
         ufo = GameObject.Find("Ufo");
         landingPosition = helicopter.transform.position;
@@ -40,6 +44,12 @@ public class EventHelicopter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(GameController.Instance.isHelicopterTargetTracked && !GameController.Instance.eventHelicopter) {
+            helicopter.SetActive(true);
+            GameObject actualHeliPos = GameObject.Find("HeliPosition");
+            helicopter.transform.position = actualHeliPos.transform.position;
+
+        }
         if (GameController.Instance.eventHelicopter)
         {
             if (!isHeliPrepared) {
@@ -51,8 +61,13 @@ public class EventHelicopter : MonoBehaviour
                 }
                 else
                     helicopter.transform.position = new Vector3(-123.1f, 34.8f, 22);
-                helicopter.SetActive(true);
-                helicopterAnimator.speed = 1;
+                if(!isHeliPrePrepared) {
+                    heliSound.Play();
+                    helicopter.SetActive(true);
+                    helicopterAnimator.speed = 1;
+                    isHeliPrePrepared = true;
+                }
+                
                 if (GameController.Instance.eventUfo)
                     heliOnEvent = "ufo";
                 else
@@ -143,11 +158,14 @@ public class EventHelicopter : MonoBehaviour
             helicopter.transform.position = Vector3.MoveTowards(helicopter.transform.position, landingPosition, Time.deltaTime * 6);
             if (Vector3.Distance(helicopter.transform.position, landingPosition) < 1)
             {
+                helicopterAnimator.speed = 0;
                 GameController.Instance.eventHelicopter = false;
                 isHeliStarted = false;
                 isHeliLanding = false;
                 isHeliPrepared = false;
                 isHeliLooking = false;
+                isHeliPrePrepared = false;
+                heliSound.Stop();
                 helicopter.SetActive(false);
                 heliOnEvent = "";
                 timer = 0;
