@@ -54,7 +54,7 @@ public class EventPolice : MonoBehaviour
             if(!isCarPrepared)
             {
                 GameController.Instance.isTrafficStopped = true;
-                Invoke("PrepareCar", 2);
+                Invoke("PrepareCar", 3);
                 isCarPrepared = true;
             }
             else if (!isAtMall && isCarPrepared && GameController.Instance.eventPoliceAtMall)

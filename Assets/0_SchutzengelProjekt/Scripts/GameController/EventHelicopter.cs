@@ -50,6 +50,9 @@ public class EventHelicopter : MonoBehaviour
             helicopter.transform.position = actualHeliPos.transform.position;
 
         }
+        if(!GameController.Instance.isHelicopterTargetTracked && !GameController.Instance.eventHelicopter) {
+            helicopter.SetActive(false);
+        }
         if (GameController.Instance.eventHelicopter)
         {
             if (!isHeliPrepared) {

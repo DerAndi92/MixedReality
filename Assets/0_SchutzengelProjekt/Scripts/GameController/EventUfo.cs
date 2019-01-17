@@ -92,7 +92,7 @@ public class EventUfo : MonoBehaviour
                             isObjectPrepared = true;
                         }
                         distance = Vector2.Distance(new Vector2(ufo.transform.position.x, ufo.transform.position.z), new Vector2(currentObject.transform.position.x, currentObject.transform.position.z));
-                        Vector3 ufoNewPosition = new Vector3(currentObject.transform.position.x, ufo.transform.position.y, currentObject.transform.position.z);
+                        Vector3 ufoNewPosition = new Vector3(currentObject.transform.position.x, startPosition.transform.position.y, currentObject.transform.position.z);
                         if(distance > 3) {
                             speed = 6;
                         } else {
