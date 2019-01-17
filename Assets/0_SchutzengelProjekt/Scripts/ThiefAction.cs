@@ -6,6 +6,12 @@ public class ThiefAction : MonoBehaviour
 {
     public GameObject bomb;
     public GameObject thief;
+    private AudioSource audioPlaceBomb;
+
+    private void Start()
+    {
+        audioPlaceBomb = GameObject.Find("PlaceBomb").GetComponent<AudioSource>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -23,6 +29,7 @@ public class ThiefAction : MonoBehaviour
     private void placeBomb()
     {
         // Bomb placed
+        audioPlaceBomb.Play();
         bomb.SetActive(true);
         GameController.Instance.eventBombPlaced++;
 

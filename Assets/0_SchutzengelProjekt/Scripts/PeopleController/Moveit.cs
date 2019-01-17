@@ -25,17 +25,23 @@ public class Moveit: MonoBehaviour {
 
     public void start()
     {
-        walk = true;
-        this.animator.SetFloat("Speed_f", speed);
-        this.animator.SetBool("Grounded", true);
-        this.animator.SetBool("Static_b", true);
-        this.animator.SetInteger("Animation_int", 0);
-        this.animator.SetBool("Crouch_b", false);
-        this.animator.SetInteger("WeaponType_int", 0);
+        if(this.animator)
+        {
+            walk = true;
+            this.animator.SetFloat("Speed_f", speed);
+            this.animator.SetBool("Grounded", true);
+            this.animator.SetBool("Static_b", true);
+            this.animator.SetInteger("Animation_int", 0);
+            this.animator.SetBool("Crouch_b", false);
+            this.animator.SetInteger("WeaponType_int", 0);
+        }
     }
 
     public void run()
     {
-        this.animator.SetFloat("Speed_f", 0.6f);
+        if (this.animator)
+        {
+            this.animator.SetFloat("Speed_f", 0.6f);
+        }  
     }
 }

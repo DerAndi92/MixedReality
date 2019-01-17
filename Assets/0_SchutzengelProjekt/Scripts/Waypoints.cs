@@ -157,6 +157,7 @@ public class Waypoints : MonoBehaviour
         if(!isBackward) { 
             transform.Rotate(0, 180, 0);
             isBackward = true;
+            isMoving = true;
             current -= 1;
         }
     }

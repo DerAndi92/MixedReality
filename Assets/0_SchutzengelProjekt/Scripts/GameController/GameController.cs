@@ -44,6 +44,8 @@ public class GameController : MonoBehaviour {
     public bool eventBomb = false;
     public short eventBombPlaced = 0;
     public bool eventPolice = false;
+    public bool eventPoliceAtMall = false;
+    public short eventBombRemoved = 0;
     public bool eventBombDone = false;
 
     // Event Reset

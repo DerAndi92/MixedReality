@@ -124,6 +124,7 @@ public class ResetTarget : MonoBehaviour, ITrackableEventHandler
         GameController.Instance.eventBomb = false;
         GameController.Instance.eventBombPlaced = 0;
         GameController.Instance.eventPolice = false;
+        GameController.Instance.eventPoliceAtMall = false;
         GameController.Instance.eventBombDone = false;
 
         GameController.Instance.resetTime = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;

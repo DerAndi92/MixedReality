@@ -50,6 +50,7 @@ public class EventFireCar : MonoBehaviour {
                 GameController.Instance.isTrafficStopped = true;
                 GameController.Instance.eventTrafficLightsInactive = true;
                 Invoke("PrepareFireCar", 2);
+                isFireCarPrepared = true;
             } 
             else if (GameController.Instance.eventFire && !GameController.Instance.isFireCleared)
             {
@@ -142,7 +143,6 @@ public class EventFireCar : MonoBehaviour {
         fireCar.SetActive(true);
         fireCar.transform.eulerAngles = new Vector3(0, -90, 0);
         waypointsFireCar.current = 0;
-        isFireCarPrepared = true;
         waypointsFireCar.isMoving = true;
         Invoke("StopTrafficStopper", 3);
     }

@@ -18,6 +18,7 @@ public class EventBomb : MonoBehaviour
     private AudioSource audioScream;
     private AudioSource audioExplosion;
     private AudioSource audioCountdown;
+    private AudioSource audioThiefsRun;
 
     private ParticleSystem explosion;
     private ParticleSystem smoke_1;
@@ -43,6 +44,7 @@ public class EventBomb : MonoBehaviour
         audioScream = GameObject.Find("Scream_Hostiles").GetComponent<AudioSource>();
         audioExplosion = GameObject.Find("Explosion_Shop").GetComponent<AudioSource>();
         audioCountdown = GameObject.Find("Bomb_Countdown").GetComponent<AudioSource>();
+        audioThiefsRun = GameObject.Find("Thiefs_Run").GetComponent<AudioSource>();
         audioAlarm.Stop();
         audioScream.Stop();
         audioExplosion.Stop();
@@ -71,6 +73,7 @@ public class EventBomb : MonoBehaviour
                     p.GetComponent<Waypoints>().isMoving = true;
                 }
                 thiefsRun = true;
+                audioThiefsRun.Play();
             }
 
             else if (!hostileRun && GameController.Instance.eventBombPlaced == 4)
@@ -78,7 +81,7 @@ public class EventBomb : MonoBehaviour
                 audioAlarm.Play();
                 audioScream.Play();
                 audioCountdown.Play();
-                Invoke("countdownOver", 16f);
+                Invoke("countdownOver", 22.6f);
 
                 hostileRun = true;
                 foreach (GameObject p in hostlies)
@@ -86,27 +89,36 @@ public class EventBomb : MonoBehaviour
                     StartCoroutine(RunHostile(p, Random.Range(0.1f, 2.3f)));
                 }
             }
+            else if(GameController.Instance.eventPoliceAtMall)
+            {
+                audioAlarm.Stop();
+                audioCountdown.Stop();
+                GameController.Instance.eventBombDone = true;
+                GameController.Instance.eventBomb = false;
+            }
         }
     }
 
     private void countdownOver()
     {
-        audioExplosion.Play();
-        audioAlarm.Stop();
-        explosion.Play(); 
+        if(!GameController.Instance.eventPoliceAtMall) { 
+            audioExplosion.Play();
+            audioAlarm.Stop();
+            explosion.Play(); 
 
-        Destroy(mallComplete);
-        mallBurned.transform.localScale = new Vector3(1, 1, 1);
-        smoke_1.Play();
-        smoke_2.Play();
-        smoke_3.Play();
-        foreach (GameObject p in bombs)
-        {
-            Destroy(p);
+            Destroy(mallComplete);
+            mallBurned.transform.localScale = new Vector3(1, 1, 1);
+            smoke_1.Play();
+            smoke_2.Play();
+            smoke_3.Play();
+            foreach (GameObject p in bombs)
+            {
+                Destroy(p);
+            }
+
+            GameController.Instance.eventBombDone = true;
+            GameController.Instance.eventBomb = false;
         }
-
-        GameController.Instance.eventBombDone = true;
-        GameController.Instance.eventTornado = false;
     }
 
     IEnumerator RunHostile(GameObject p, float delay)
