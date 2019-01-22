@@ -6,10 +6,7 @@ public class EventPolice : MonoBehaviour
 {
 
     public GameObject[] policeMans;
-
     private GameObject policeCar;
-    private GameObject startWayPoint;
-    private GameObject endWayPoint; 
 
     private AudioSource sirene;
 
@@ -21,11 +18,11 @@ public class EventPolice : MonoBehaviour
     private bool isCarPrepared = false;
     private bool isAtMall = false;
     private bool goBack = false;
+    private bool isCarActivated = false;
+    private bool isCarStarted = false;
 
-    // Start is called before the first frame update
     void Start()
     {
-
         // Deactivate PoliceMans
         foreach (GameObject p in policeMans)
         {
@@ -34,8 +31,6 @@ public class EventPolice : MonoBehaviour
 
         policeCar = GameObject.Find("bomb_Police");
         sirene = GameObject.Find("Police_Sirene").GetComponent<AudioSource>();
-        startWayPoint = GameObject.Find("wayPoint_Parkplatz_Start");
-        endWayPoint = GameObject.Find("wayPoint_Parkplatz_Ende");
 
         waypointsCar = policeCar.GetComponent<Waypoints>();
         waypointsLong = GameObject.Find("PoliceCarWPLong").GetComponent<Waypoints>();
@@ -56,6 +51,8 @@ public class EventPolice : MonoBehaviour
                 GameController.Instance.isTrafficStopped = true;
                 Invoke("PrepareCar", 3);
                 isCarPrepared = true;
+                policeCar.SetActive(true);
+
             }
             else if (!isAtMall && isCarPrepared && GameController.Instance.eventPoliceAtMall)
             {
@@ -84,21 +81,20 @@ public class EventPolice : MonoBehaviour
             }
             else
             {
-                if (Vector3.Distance(policeCar.transform.position, endWayPoint.transform.position) < 2)
+                if (!waypointsCar.isMoving && isCarStarted)
                 {
                     ResetCar();
                 }
             }
         }
+       
     }
 
     void PrepareCar()
     {
-        policeCar.transform.position = startWayPoint.transform.position;
-        policeCar.transform.eulerAngles = new Vector3(0, -90, 0);
         waypointsCar.current = 0;
-        policeCar.SetActive(true);
-
+        isCarActivated = true;
+        isCarStarted = true;
         if (GameController.Instance.eventBombPlaced == 4 && !GameController.Instance.eventBombDone)
         {
             waypointsCar.changeWaypoints(waypointsShort.waypoints, waypointsShort.rotations, waypointsCar.speed, true, false, false, false);
@@ -122,6 +118,7 @@ public class EventPolice : MonoBehaviour
     {
         policeCar.SetActive(false);
         waypointsCar.current = 0;
+        isCarStarted = false;
         waypointsCar.isMoving = false;
         isCarPrepared = false;
         GameController.Instance.eventPolice = false;

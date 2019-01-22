@@ -8,8 +8,6 @@ public class EventFireCar : MonoBehaviour {
 
     private GameObject fireCar;
     private GameObject waterThrowerGameObject;
-    private GameObject startWayPoint;
-    private GameObject endWayPoint;
     private GameObject beforeEndWayPoint;
 
     private ObjectActionHandler objectActionHandlerScript;
@@ -23,13 +21,12 @@ public class EventFireCar : MonoBehaviour {
     private bool isFireCarAtFireClearingPosition = false;
     private bool isWaterThrower = false;
     private bool isFireCarPrepared = false;
-    private float timer;
+    private bool isFireCarStarted = false;
+    private float timer; 
     void Start()
     {
         fireCar = GameObject.Find("fireCar");
         sirene = GameObject.Find("FireCarSireneAudioSource").GetComponent<AudioSource>();
-        startWayPoint = GameObject.Find("wayPoint_Parkplatz_Start");
-        endWayPoint = GameObject.Find("wayPoint_Parkplatz_Ende");
         beforeEndWayPoint = GameObject.Find("wayPoint_Parkplatz_Einfahrt");
        
         waypointsFireCar = fireCar.GetComponent<Waypoints>();
@@ -45,12 +42,11 @@ public class EventFireCar : MonoBehaviour {
         if(GameController.Instance.eventFireCar)
         {
             if(!isFireCarPrepared) {
-                //Debug.Log("_______Prepare FireCar");
-
                 GameController.Instance.isTrafficStopped = true;
                 GameController.Instance.eventTrafficLightsInactive = true;
                 Invoke("PrepareFireCar", 3);
                 isFireCarPrepared = true;
+                fireCar.SetActive(true);
             } 
             else if (GameController.Instance.eventFire && !GameController.Instance.isFireCleared)
             {
@@ -95,12 +91,13 @@ public class EventFireCar : MonoBehaviour {
             }
             else
             {
-                if (Vector3.Distance(fireCar.transform.position, endWayPoint.transform.position) < 1)
+                if (!waypointsFireCar.isMoving && isFireCarStarted)
                 {
                     ResetFireCar();
                 }
             }
         }
+
     }
 
     void TimerUpdate()
@@ -138,17 +135,16 @@ public class EventFireCar : MonoBehaviour {
 
     void PrepareFireCar()
     {
-        fireCar.transform.position = startWayPoint.transform.position;
         timer = 0;
-        fireCar.SetActive(true);
         if(GameController.Instance.eventFire && !GameController.Instance.isFireCleared){
             sirene.Play();
             isSireneOn = true;
         }
-        fireCar.transform.eulerAngles = new Vector3(0, -90, 0);
+        isFireCarStarted = true;
         waypointsFireCar.current = 0;
         waypointsFireCar.isMoving = true;
         Invoke("StopTrafficStopper", 3);
+
     }
 
     void ResetFireCar()
@@ -165,6 +161,7 @@ public class EventFireCar : MonoBehaviour {
         fireCar.SetActive(false);
         isSireneOn = false;
         isFireCarPrepared = false;
+        isFireCarStarted = false;
     }
 
     void StopTrafficStopper()
