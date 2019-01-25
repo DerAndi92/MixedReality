@@ -6,15 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/0_SchutzengelProjekt/alt/scene1_alt.unity
+    path: Assets/0_CCP-Projekt/alt/scene1_alt.unity
     guid: ebe25de87c2665349950f967e0546b0a
   - enabled: 0
-    path: Assets/0_SchutzengelProjekt/alt/Schutzengel_Town.unity
+    path: Assets/0_CCP-Projekt/alt/Schutzengel_Town.unity
     guid: 08057201edf004537b1ac194a7d05def
   - enabled: 0
-    path: Assets/0_SchutzengelProjekt/Town.unity
+    path: Assets/0_CCP-Projekt/Town.unity
     guid: ee0dcc3a2c806480896d1b17d7de179b
   - enabled: 1
-    path: Assets/0_SchutzengelProjekt/City_Town.unity
+    path: Assets/0_CCP-Projekt/City_Town.unity
     guid: f918f714d17164e9a8bd0c689dd59dae
   m_configObjects: {}
