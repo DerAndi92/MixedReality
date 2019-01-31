@@ -10,7 +10,7 @@ public class EventTornado : MonoBehaviour
     private GameObject tornado;
     private ParticleSystem tornadoParticle;
     private Waypoints swimmingWaypoints;
-    private Light light;
+    private Light cityLight;
     private float lightStart;
 
     private AudioSource audioTornado;
@@ -25,7 +25,7 @@ public class EventTornado : MonoBehaviour
     void Start()
     {
         tornado = GameObject.Find("TornadoObject");
-        light = GameObject.Find("Directional Light").GetComponent<Light>();
+        cityLight = GameObject.Find("Directional Light").GetComponent<Light>();
         swimmingWaypoints = GameObject.Find("Swimming_Waypoints_Tornado").GetComponent<Waypoints>();
         tornadoParticle = tornado.GetComponent<ParticleSystem>();
 
@@ -34,7 +34,7 @@ public class EventTornado : MonoBehaviour
         audioTornado.Stop();
         audioTornadoScream.Stop();
 
-        lightStart = light.intensity;
+        lightStart = cityLight.intensity;
         tornadoParticle.Pause(true);
     }
 
@@ -49,8 +49,8 @@ public class EventTornado : MonoBehaviour
             if (!lightDim)
             {
                 if(!audioTornado.isPlaying) audioTornado.Play();
-                if (light.intensity >= 0.1)
-                    light.intensity -= Time.deltaTime * 0.4f;
+                if (cityLight.intensity >= 0.1)
+                    cityLight.intensity -= Time.deltaTime * 0.4f;
                 else
                     lightDim = true;
             }
@@ -93,9 +93,9 @@ public class EventTornado : MonoBehaviour
 
             else if(peopleRan && !GameObject.Find("TornadoObject"))
             {
-                if (light.intensity < lightStart)
+                if (cityLight.intensity < lightStart)
                 {
-                    light.intensity += Time.deltaTime * 0.4f;
+                    cityLight.intensity += Time.deltaTime * 0.4f;
                 }
                 else
                 {

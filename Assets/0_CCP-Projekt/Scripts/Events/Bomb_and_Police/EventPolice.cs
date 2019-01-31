@@ -18,7 +18,6 @@ public class EventPolice : MonoBehaviour
     private bool isCarPrepared = false;
     private bool isAtMall = false;
     private bool goBack = false;
-    private bool isCarActivated = false;
     private bool isCarStarted = false;
 
     void Start()
@@ -93,7 +92,6 @@ public class EventPolice : MonoBehaviour
     void PrepareCar()
     {
         waypointsCar.current = 0;
-        isCarActivated = true;
         isCarStarted = true;
         if (GameController.Instance.eventBombPlaced == 4 && !GameController.Instance.eventBombDone)
         {

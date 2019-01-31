@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
 
-    public List<MonoBehaviour> eventSubscribedScripts = new List<MonoBehaviour>();
     public bool isCityTracked = false;
     public bool isEventInPlace = false;
     public bool isRescueInPlace = false;
@@ -53,6 +52,7 @@ public class GameController : MonoBehaviour {
     public Int32 resetTime = 0;
 
     public bool finalExplosion = false;
+
     private static GameController instance;
 
     public static GameController Instance {
@@ -68,24 +68,5 @@ public class GameController : MonoBehaviour {
         fireCarStopAtWaypoint = null;
         DontDestroyOnLoad(gameObject);
 	}
-
-    public void SubscribeScriptToGameEventUpdates(MonoBehaviour pScript) {
-        eventSubscribedScripts.Add(pScript);
-    }
-
-    public void DeSubscribeScriptToGameEventUpdates(MonoBehaviour pScript)
-    {
-        while(eventSubscribedScripts.Contains(pScript)) {
-            eventSubscribedScripts.Remove(pScript);
-    
-        }
-    }
-
-    public void PlayerActivatedEvent() {
-        foreach(MonoBehaviour _script in eventSubscribedScripts) {
-            _script.Invoke("gameEventUpdated", 0);
-        }
-
-    }
 
 }

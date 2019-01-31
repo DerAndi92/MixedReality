@@ -24,17 +24,13 @@ public class EventFire : MonoBehaviour {
     private AudioSource fireAudio;
 
     void Start () {
-        fireAudio = GameObject.Find("FireAudioSource").GetComponent<AudioSource>();
-        fireGameObject = GameObject.Find ("Fire");
-        fireParticleSystem = GameObject.Find ("Fire").GetComponent<ParticleSystem> ();
-        houseObjects = GameObject.FindGameObjectsWithTag ("Part of Action");
+        FindGameObjects();
         timer = fireDurationInSeconds;
     }
 
     void Update () {
         // wenn das Event Feuer ausgelöst wird und das Feuerevent noch nicht durchgeführt wurde
         if (GameController.Instance.eventFire && !GameController.Instance.eventFireDone) {
-            // solange das Feuerwehrauto noch nicht getracked wurde
             if (!GameController.Instance.eventFireCar) {
                 if(houseNumber < houseObjects.Length) {
                     // alle x Sekunden geht das Feuer zum nähsten Gebäde
@@ -76,6 +72,14 @@ public class EventFire : MonoBehaviour {
         }
     }
 
+    void FindGameObjects()
+    {
+        fireAudio = GameObject.Find("FireAudioSource").GetComponent<AudioSource>();
+        fireGameObject = GameObject.Find("Fire");
+        fireParticleSystem = GameObject.Find("Fire").GetComponent<ParticleSystem>();
+        houseObjects = GameObject.FindGameObjectsWithTag("Part of Action");
+    }
+
     void TimerUpdate () {
         timer += Time.deltaTime;
     }
@@ -84,6 +88,7 @@ public class EventFire : MonoBehaviour {
         actualHouse = houseObjects[houseNumber];
         fireActionHandlerScript = actualHouse.GetComponent<FireActionHandler> ();
 
+        //WayPoint und Wasserwerferposition an GameController -> wird vom EventFireCar ausgelesen
         GameController.Instance.fireCarStopAtWaypoint = fireActionHandlerScript.fireCarStopAtWaypoint;
         GameController.Instance.isWaterThrowerRight = fireActionHandlerScript.isWaterThrowerRight;
 

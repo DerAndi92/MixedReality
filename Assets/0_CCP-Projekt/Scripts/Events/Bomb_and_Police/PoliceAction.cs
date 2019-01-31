@@ -9,7 +9,6 @@ public class PoliceAction : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.name);
         if (other.gameObject == police)
         {
             police.GetComponent<Moveit>().stop();

@@ -7,23 +7,23 @@ public class EventHelicopter : MonoBehaviour
 
     private GameObject helicopter;
     private GameObject ufo;
-    private Vector3 landingPosition;
     private GameObject noEventFlyPoint;
-    private Vector3 landingFieldPosition;
 
     private Animator helicopterAnimator;
-    private int heliStartSeconds = 3;
+    private AudioSource heliSound;
+
     private Vector3 heliStartPosition;
     private Vector3 heliLookAtPoint;
+    private Vector3 landingFieldPosition;
+    private Vector3 landingPosition;
+
     private float timer;
     private bool isHeliStarted = false;
     private bool isHeliLanding = false;
     private bool isHeliPrepared = false;
-    private bool isHeliLooking = false;
     private bool isAnimationAndSound = false;
-
+    private bool isHeliAtFlyingPosition = false;
     private string heliOnEvent = "";
-    private AudioSource heliSound;
 
     void Start()
     {
@@ -41,9 +41,10 @@ public class EventHelicopter : MonoBehaviour
         if (GameController.Instance.eventHelicopter)
         {
             if (!isHeliPrepared) {
+                // Helikopter auf Dach positionieren
                 GetPositionsForHeli();
                 helicopter.transform.position = landingFieldPosition;
-                
+               
                 if(!isAnimationAndSound) {
                     heliSound.Play();
                     helicopter.SetActive(true);
@@ -51,16 +52,16 @@ public class EventHelicopter : MonoBehaviour
                     isAnimationAndSound = true;
                 }
                 
-                // Setzten des Events, so dass der Helikopter bei Aktivierung des Ufo, während er fliegt, wieder zurück zum
+                // Setzten des Events so, dass der Helikopter bei Aktivierung des Ufo, während er fliegt, wieder zurück zum
                 // Landeplatz fliegt und nicht das Ufo angreift -> Man muss Heli erneut losschicken
                 if (GameController.Instance.eventUfo)
                     heliOnEvent = "ufo";
                 else
                     heliOnEvent = "noEvent";
 
-                // Heli soll erst nach zwei Sekunden losfliegen
+                // Heli startet nach zwei Sekunden
                 if (timer < 2) { 
-                    timerUpdate();
+                    TimerUpdate();
                 }
                 else { 
                     timer = 0;
@@ -70,59 +71,50 @@ public class EventHelicopter : MonoBehaviour
             } 
             else if (heliOnEvent == "ufo")
             {
-                if ((heliStartPosition.y - helicopter.transform.position.y) >= 1 && !isHeliStarted)
-                {
-                    helicopter.transform.position = Vector3.MoveTowards(helicopter.transform.position, heliStartPosition, Time.deltaTime * 6);
-                }
-                else
-                {
-                    isHeliStarted = true;
-                    if (Vector3.Distance(helicopter.transform.position, ufo.transform.position) > 10 && !GameController.Instance.ufoIsShot)
-                    {
-                        MoveHelicopterTo(ufo.transform.position);
-                    }
-                    else
-                    {
-                        // löst die Explosionen beim Ufo aus im Ufoscript
-                        GameController.Instance.ufoIsShot = true;
-                        LandingHeli();
-                    }
-                }
+                DoHeliAction(ufo.transform.position, 10);
+
             }
             else if (heliOnEvent == "noEvent")
             {
-                if ((heliStartPosition.y - helicopter.transform.position.y) >= 1 && !isHeliStarted)
-                {
-                    helicopter.transform.position = Vector3.MoveTowards(helicopter.transform.position, heliStartPosition, Time.deltaTime * 6);
-                }
-                else
-                {
-                    isHeliStarted = true;
-
-                    if (Vector3.Distance(helicopter.transform.position, noEventFlyPoint.transform.position) > 1 && !isHeliLooking)
-                    {
-                        MoveHelicopterTo(noEventFlyPoint.transform.positio);
-                    }
-                    else
-                    {
-                        isHeliLooking = true;
-                        LandingHeli();
-                    }
-                }
+                DoHeliAction(noEventFlyPoint.transform.position, 1);
             }
         } else {
             // platzieren, des Helikopters auf dem Helikopter-Landeplatz, sobald Gebäude getrackted wird
             if(GameController.Instance.isHelicopterTargetTracked ) {
                 helicopter.SetActive(true);
-                GameObject landingFieldPosition = GameObject.Find("HeliPosition");
-                helicopter.transform.position = landingFieldPosition.transform.position;
+                landingFieldPosition = GameObject.Find("HeliPosition").transform.position;
+                helicopter.transform.position = landingFieldPosition;
             } else {
                 helicopter.SetActive(false);
             }
         }
 
     }
-
+    void DoHeliAction(Vector3 flyingPosition, int distance) {
+        // Heli fliegt zur Startposition
+        if ((heliStartPosition.y - helicopter.transform.position.y) >= 1 && !isHeliStarted)
+        {
+            helicopter.transform.position = Vector3.MoveTowards(helicopter.transform.position, heliStartPosition, Time.deltaTime * 6);
+        }
+        else
+        {
+            isHeliStarted = true;
+            if (Vector3.Distance(helicopter.transform.position, flyingPosition) > distance && !isHeliAtFlyingPosition)
+            {
+                MoveHelicopterTo(flyingPosition);
+            }
+            else
+            {
+                isHeliAtFlyingPosition = true;
+                if (heliOnEvent == "ufo")
+                {
+                    // löst die Explosionen beim Ufo aus im Ufoscript
+                    GameController.Instance.ufoIsShot = true;
+                }
+                LandingHeli();
+            }
+        }
+    }
     void FindObjects() {
         heliSound = GameObject.Find("HelicopterAudio").GetComponent<AudioSource>();
         helicopter = GameObject.Find("Helicopter");
@@ -132,7 +124,7 @@ public class EventHelicopter : MonoBehaviour
     }
 
     void GetPositionsForHeli() {
-        landingFieldPosition = GameObject.Find("HeliPosition").position;
+        landingFieldPosition = GameObject.Find("HeliPosition").transform.position;
         heliStartPosition = new Vector3(helicopter.transform.position.x, helicopter.transform.position.y + 10, helicopter.transform.position.z);
         heliLookAtPoint = new Vector3(helicopter.transform.position.x + 20, helicopter.transform.position.y + 10, helicopter.transform.position.z);
         landingPosition = helicopter.transform.position;
@@ -146,7 +138,7 @@ public class EventHelicopter : MonoBehaviour
 
     void LandingHeli()
     {
-        timerUpdate();
+        TimerUpdate();
         if (timer > 2)
         {
             if (!isHeliLanding)
@@ -166,7 +158,7 @@ public class EventHelicopter : MonoBehaviour
                     isHeliStarted = false;
                     isHeliLanding = false;
                     isHeliPrepared = false;
-                    isHeliLooking = false;
+                    isHeliAtFlyingPosition = false;
                     isAnimationAndSound = false;
                     heliSound.Stop();
                     helicopter.SetActive(false);
@@ -177,7 +169,7 @@ public class EventHelicopter : MonoBehaviour
         }
     }
 
-    void timerUpdate()
+    void TimerUpdate()
     {
         timer += Time.deltaTime;
     }

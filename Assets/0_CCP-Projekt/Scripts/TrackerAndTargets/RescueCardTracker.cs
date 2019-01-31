@@ -31,7 +31,6 @@ public class RescueCardTracker : MonoBehaviour, ITrackableEventHandler
             switch (gameObject.name)
             {
                 case "TargetFireDepartment":
-                    Debug.Log("TargetFireDepartment _____ Position: " + gameObject.transform.position);
                     GameController.Instance.isFireCarTargetTracked = true;
                     break;
                 case "TargetHeliLandingPlace":

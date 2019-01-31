@@ -12,22 +12,16 @@ public class ResetTarget : MonoBehaviour, ITrackableEventHandler
     private AudioSource destructionAudioSource;
     private GameObject explosion;
     private GameObject city;
-    private AudioSource explosionAudio;
-    private Light light;
+    private Light cityLight;
+
     private bool lightSwitch = true;
     private bool isExploding = false;
     private bool isExploded = false;
-
     private bool timeLeft = true;
-    // Start is called before the first frame update
+
     void Start()
     {
-        destructionAudioSource = GameObject.Find("DestructionAudioSource").GetComponent<AudioSource>();
-        explosion = GameObject.Find("FinalExplosion");
-        city = GameObject.Find("City");
-        explosionAudio = explosion.GetComponent<AudioSource>();
-        explosion.SetActive(false);
-        light = GameObject.Find("Directional Light").GetComponent<Light>();
+        FindGameObjects();
 
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
         if (mTrackableBehaviour)
@@ -36,7 +30,6 @@ public class ResetTarget : MonoBehaviour, ITrackableEventHandler
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         Int32 timeNow = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
@@ -48,27 +41,27 @@ public class ResetTarget : MonoBehaviour, ITrackableEventHandler
             // Roter Alarm wenn aktiv
             if(!isExploding && GameController.Instance.eventReset)
             {
-      
-                light.color += (Color.red / 2.5f) * Time.deltaTime;
+
+                cityLight.color += (Color.red / 2.5f) * Time.deltaTime;
 
                 if (lightSwitch)
                 {
-                    light.intensity -= Time.deltaTime * 0.8f;
-                    if (light.intensity <= 0.1) lightSwitch = false;
+                    cityLight.intensity -= Time.deltaTime * 0.8f;
+                    if (cityLight.intensity <= 0.1) lightSwitch = false;
                 }
                 else
                 {
-                    light.intensity += Time.deltaTime * 0.8f;
-                    if (light.intensity >= 1) lightSwitch = true;
+                    cityLight.intensity += Time.deltaTime * 0.8f;
+                    if (cityLight.intensity >= 1) lightSwitch = true;
                 }
             }
 
             // Bei Explosion die Stadt zerstören
             if (isExploding && GameController.Instance.eventReset)
             {
-                light.color += (Color.white / 2f) * Time.deltaTime;
-                light.intensity += Time.deltaTime * 13f;
-                if (light.intensity >= 6)
+                cityLight.color += (Color.white / 2f) * Time.deltaTime;
+                cityLight.intensity += Time.deltaTime * 13f;
+                if (cityLight.intensity >= 6)
                 {
                     city.SetActive(false);
                     isExploding = false;
@@ -76,6 +69,15 @@ public class ResetTarget : MonoBehaviour, ITrackableEventHandler
                 }
             }
         }
+    }
+
+    void FindGameObjects()
+    {
+        destructionAudioSource = GameObject.Find("DestructionAudioSource").GetComponent<AudioSource>();
+        explosion = GameObject.Find("FinalExplosion");
+        city = GameObject.Find("City");
+        explosion.SetActive(false);
+        cityLight = GameObject.Find("Directional Light").GetComponent<Light>();
     }
 
     void StartReset() {
@@ -128,7 +130,7 @@ public class ResetTarget : MonoBehaviour, ITrackableEventHandler
         GameController.Instance.eventBombDone = false;
 
         GameController.Instance.resetTime = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-        SceneManager.LoadScene("City_Town");
+        SceneManager.LoadScene("CCP-City");
         GameController.Instance.eventReset = false;
 
     }
@@ -144,8 +146,6 @@ public class ResetTarget : MonoBehaviour, ITrackableEventHandler
                 GameController.Instance.eventReset = true;
                 destructionAudioSource.Play();
                 Invoke("StartReset", 6.4f);
-
-                
             }
         }
     }
