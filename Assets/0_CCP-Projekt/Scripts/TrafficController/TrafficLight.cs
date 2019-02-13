@@ -5,6 +5,7 @@ using System.Linq;
 
 public class TrafficLight : MonoBehaviour {
 
+    // Wie viele Sekunden sollen vergehen, bis die Ampelschaltung geprüft wird?
     public float checkInterval = 3;
 
     private bool redForCar = false;
@@ -12,7 +13,6 @@ public class TrafficLight : MonoBehaviour {
     private List<Collider> cars = new List<Collider>();
     private List<Collider> people = new List<Collider>();
 
-    // Use this for initialization
     void Start () {
         
     }
@@ -21,6 +21,7 @@ public class TrafficLight : MonoBehaviour {
 	void Update () {
         delta += Time.deltaTime;
 
+        // Ampelschaltung wird nach X Sekunden überprüft
         if (delta >= checkInterval)
         {
             delta = 0;
@@ -30,21 +31,29 @@ public class TrafficLight : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
+
+        // An Hand der Waypoints wird überprüft, um welches Objekt es sich handelt.
+
         Waypoints wp = other.GetComponent<Waypoints>();
         if (wp != null)
         {
-            
-            if(redForCar && wp.collisionGroup != "people")
+
+            // Wenn die Ampel rot für Autos ist ist und ein Auto an der Ampel ankommt, stoppt dieses und wird im Cars Array aufgenommen.
+            if (redForCar && wp.collisionGroup != "people")
             {
                 wp.isMoving = false;
                 cars.Add(other);
             }
+
+            // Wenn die Ampel rot für Leute ist und sie an der Ampel ankommen, stopppen sie und werden in das people Array aufgenommen.
             else if (!redForCar && wp.collisionGroup == "people")
             {
                 wp.isMoving = false;
                 other.GetComponent<Moveit>().stop();
                 people.Add(other);
             }
+
+            // Auch wenn die Ampel für Leute grün ist und sie über die Straße gehen können, werden sie in das people Array aufgenommen.
             else if(redForCar && wp.collisionGroup == "people")
             {
                 people.Add(other);
@@ -54,26 +63,33 @@ public class TrafficLight : MonoBehaviour {
 
     private void OnTriggerExit(Collider other)
     {
+        // Wenn die Ampel grün für Leute ist und ein Mensch die Ampel verlässt (über Straße gegangen) wurd er aus dem people Array entfernt.
         if (redForCar && people.Contains(other))
         {
             people.Remove(other);
         }
     }
 
+    // Die Ampelschaltung wird überprüft
     private void check()
     {
-        if(redForCar && people.Count() == 0)
+        // Wenn aktuell rot für Autos ist, aber keine Menschen mehr über die Straße gehen (people array leer), wird die Ampel umgeschaltet.
+        // Die Autos, die gestopppt wurden (im cars array), fahren wieder los und werden aus dem array entfernt.
+        if (redForCar && people.Count() == 0)
         {
             redForCar = false;
-            foreach(Collider c in cars)
+            foreach (Collider c in cars)
             {
                 c.GetComponent<Waypoints>().isMoving = true;
             }
             cars.Clear();
         }
+
+        // Wenn grün für die Autos ist, aber Leute an der Ampel warten, wird die Ampel umgeschaltet. 
+        // Alle Leute im people Array fangen dann wieder an zu laufen
         else if(!redForCar && people.Count() > 0)
         {
-            if(!GameController.Instance.eventTrafficLightsInactive) { //Wenn Event aktiv, sollen keine Ampeln für Autos auf rot gehen!
+            if(!GameController.Instance.eventTrafficLightsInactive) { //Wenn bestimmte Events aktiv sind, sollen keine Ampeln für Autos auf rot gehen! Damit diese freie Fahrt haben. (Feuerwehr z.B.)
                 redForCar = true;
                 foreach (Collider p in people)
                 {

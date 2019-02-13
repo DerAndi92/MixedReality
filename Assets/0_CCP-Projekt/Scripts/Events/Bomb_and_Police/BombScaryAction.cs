@@ -5,15 +5,16 @@ using UnityEngine;
 public class BombScaryAction : MonoBehaviour
 {
 
+    // Skript auf People Objekte setzen!
+
     private bool done = false; 
 
-    // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Update is called once per frame
+    // Wenn alle vier Bomben platziert wurden, rennen die ausgewählten Leute zum ausgewählten Ziel und verschwinden danach.
     void Update()
     {
         if(!done && GameController.Instance.eventBombPlaced == 4)

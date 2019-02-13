@@ -6,6 +6,8 @@ public class Crouch : MonoBehaviour
 {
 
     private Animator animator;
+
+    // Soll die Animation bereits aktiv sein?
     public bool crouch = true;
 
     // Use this for initialization
@@ -18,12 +20,14 @@ public class Crouch : MonoBehaviour
         }
     }
 
+    // Animation stopppen (Idle aktiv)
     public void stop()
     {
         crouch = false;
         this.animator.SetBool("Crouch_b", false);
     }
 
+    // Animation starten
     public void start()
     {
         this.animator.SetFloat("Speed_f", 0.0f);

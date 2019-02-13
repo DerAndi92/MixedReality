@@ -6,6 +6,8 @@ public class Sexydance : MonoBehaviour
 {
 
     private Animator animator;
+
+    // Soll die Animation bereits aktiv sein?
     public bool dance = true;
 
     // Use this for initialization
@@ -18,12 +20,14 @@ public class Sexydance : MonoBehaviour
         }
     }
 
+    // Animation stopppen (Idle aktiv)
     public void stop()
     {
         dance = false;
         this.animator.SetInteger("Animation_int", 0);
     }
 
+    // Animation starten
     public void start()
     {
         dance = true;

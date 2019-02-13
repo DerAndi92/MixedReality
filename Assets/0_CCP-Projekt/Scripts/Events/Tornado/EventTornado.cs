@@ -21,7 +21,6 @@ public class EventTornado : MonoBehaviour
     private bool lightDim = false;
     private float timer = 0;
 
-    // Start is called before the first frame update
     void Start()
     {
         tornado = GameObject.Find("TornadoObject");
@@ -91,6 +90,8 @@ public class EventTornado : MonoBehaviour
                 timer = 0;
             }
 
+            // Wenn alle Leute weggelaufen sind, wird geprüft, ob der Tornado noch da ist (dieser verschwindet, wenn alle Waypoints abgelaufen wurden)
+            // Ist das der Fall, wird das Licht wieder normal, der Ton gestopppt und das Event beendet.
             else if(peopleRan && !GameObject.Find("TornadoObject"))
             {
                 if (cityLight.intensity < lightStart)

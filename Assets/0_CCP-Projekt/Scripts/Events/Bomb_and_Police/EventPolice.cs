@@ -11,8 +11,12 @@ public class EventPolice : MonoBehaviour
     private AudioSource sirene;
 
     private Waypoints waypointsCar;
+
+    // Wegpunkte für die Fahrt in der Stadt
     private Waypoints waypointsLong;
+    // Wegpunkte für die Fahrt zur Mall
     private Waypoints waypointsShort;
+    // Wegpunkte für die Fahrt von Mall zurück zum Anfang
     private Waypoints waypointsShort_Back;
 
     private bool isCarPrepared = false;
@@ -22,7 +26,7 @@ public class EventPolice : MonoBehaviour
 
     void Start()
     {
-        // Deactivate PoliceMans
+        // Alle Polizisten bei der Mall werden inaktiv geschaltet, damit sie nicht gesehen werden.
         foreach (GameObject p in policeMans)
         {
             p.SetActive(false);
@@ -39,13 +43,14 @@ public class EventPolice : MonoBehaviour
         policeCar.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // ist das Polizei-Event ausgelöst?
         if (GameController.Instance.eventPolice)
         {
 
-            if(!isCarPrepared)
+            // Wurde das Auto bereits für die Fahrt vorbereitet?
+            if (!isCarPrepared)
             {
                 GameController.Instance.isTrafficStopped = true;
                 Invoke("PrepareCar", 3);
@@ -53,31 +58,40 @@ public class EventPolice : MonoBehaviour
                 policeCar.SetActive(true);
 
             }
+
+            // Ist das Auto für die Fahrt vorbereitet aber noch nicht bei der Mall angekommen?
             else if (!isAtMall && isCarPrepared && GameController.Instance.eventPoliceAtMall)
             {
                 isAtMall = true;
+
+                // Wurden die Bomben bereits entschärft?
                 if (!GameController.Instance.eventBombDone)
                 {
-                    // Verbrecher laufen los
+                    // Polizisten laufen los, um Bomben zu entschärfen
                     foreach (GameObject p in policeMans)
                     {
                         p.SetActive(true);
                         p.GetComponent<Moveit>().start();
                         p.GetComponent<Waypoints>().isMoving = true;
                     }
-                } else
+                }
+                else
                 {
                     GameController.Instance.eventBombRemoved = 4;
                 }
-                
+
             }
-            else if(!goBack && isAtMall && GameController.Instance.eventBombRemoved == 4)
+
+            // Sind die Polizisten alle schon zurück gelaufen und kann das Polizei Auto zurückfahren?
+            else if (!goBack && isAtMall && GameController.Instance.eventBombRemoved == 4)
             {
                 GameController.Instance.isTrafficStopped = true;
                 sirene.Stop();
                 Invoke("CarDriveBack", 4);
                 goBack = true;
             }
+
+            // Das Auto ist wieder zurück in der Station und das Event kann resettet werden
             else
             {
                 if (!waypointsCar.isMoving && isCarStarted)
@@ -89,6 +103,11 @@ public class EventPolice : MonoBehaviour
        
     }
 
+
+    // Das Auto wird für die fahrt vorbereitet
+    // Wenn das Bombenevent aktiv ist, fährt das Auto zur Mall. Wenn nicht, fährt es einmal durch die Stadt.
+    // Entsprechend werden die Waypoints ausgetauscht.
+    // Außerdem wird der Verkehr vor der Rettungsstation gestopppt, damit die Autos nicht zusammenstoßen.
     void PrepareCar()
     {
         waypointsCar.current = 0;
@@ -107,11 +126,13 @@ public class EventPolice : MonoBehaviour
         
     }
 
+    // Verkehr vor der Rettungsstation soll wieder weiterfahren
     void StopTrafficStopper()
     {
         GameController.Instance.isTrafficStopped = false;
     }
 
+    // Nach dem Event wird das Auto wieder korrekt positioniert.
     void ResetCar()
     {
         policeCar.SetActive(false);
@@ -122,6 +143,7 @@ public class EventPolice : MonoBehaviour
         GameController.Instance.eventPolice = false;
     }
 
+    // Die Polizei soll von der Mall zurück zur Rettungsstation fahren. Dafür werden die Waypoints entsprechend ausgetauscht.
     void CarDriveBack()
     {
         waypointsCar.changeWaypoints(waypointsShort_Back.waypoints, waypointsShort_Back.rotations, waypointsCar.speed, true, false, false, false);

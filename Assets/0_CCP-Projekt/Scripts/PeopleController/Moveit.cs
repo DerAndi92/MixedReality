@@ -5,7 +5,11 @@ using UnityEngine;
 public class Moveit: MonoBehaviour {
 
     private Animator animator;
+
+    // Soll die Animation bereits aktiv sein?
     public bool walk = true;
+
+    // Wie schnell laufen?
     public float speed = 0.4f;
 
 	// Use this for initialization
@@ -17,12 +21,14 @@ public class Moveit: MonoBehaviour {
         }
 	}
 
+    // Animation stopppen (Idle aktiv)
     public void stop()
     {
         walk = false;
         this.animator.SetFloat("Speed_f", 0.0f);
     }
 
+    // Animation starten
     public void start()
     {
         if(this.animator)
@@ -37,6 +43,7 @@ public class Moveit: MonoBehaviour {
         }
     }
 
+    // Laufgeschwindigkeit erhöhen
     public void run()
     {
         if (this.animator)

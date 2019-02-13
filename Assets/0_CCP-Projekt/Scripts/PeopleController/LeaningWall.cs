@@ -7,7 +7,7 @@ public class LeaningWall : MonoBehaviour
 
     private Animator animator;
 
-    // Use this for initialization
+    // Animation wird direkt aktiviert
     void Start()
     {
         this.animator = this.GetComponent<Animator>();
@@ -20,11 +20,5 @@ public class LeaningWall : MonoBehaviour
             this.animator.SetBool("Crouch_b", false);
             this.animator.SetInteger("WeaponType_int", 0);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class Talking : MonoBehaviour {
     private Animator animator;
+
+    // Wie oft soll die Pose gewechselt werden?
     public float timeLeft = 4.0f;
+
+    // Welche Poste ist aktiv?
     public int activeAnimation = 2;
-    // Use this for initialization
+
     void Start () {
         this.animator = this.GetComponent<Animator>();
         if (this.animator != null)
         {
+            // Aktiviere Gesprächs-Animation mit Start-Pose
             this.animator.SetFloat("Speed_f", 0.0f);
             this.animator.SetBool("Grounded", true);
             this.animator.SetBool("Static_b", true);
@@ -19,9 +24,9 @@ public class Talking : MonoBehaviour {
         }
     }
 	
-	// Update is called once per frame
 	void Update () {
 
+        // Ändere die Pose wenn die entsprechende Zeit erreicht ist.
         timeLeft -= Time.deltaTime;
         if (timeLeft < 0)
         {

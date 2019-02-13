@@ -29,12 +29,13 @@ public class EventBomb : MonoBehaviour
     void Start()
     {
 
-        // Deactivate Bombs
+        // Alle Bomben aktivieren, damit man sie nicht sehen kann
         foreach (GameObject p in bombs)
         {
             p.SetActive(false);
         }
-        // Deactivate Hostiles
+
+        // Alle Geißeln deaktivieren, damit man sie nicht sehen kann
         foreach (GameObject p in hostlies)
         {
             p.SetActive(false);
@@ -57,13 +58,14 @@ public class EventBomb : MonoBehaviour
         mallBurned = GameObject.Find("Mall_Burned");  
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Ist das Bombenaevent aktiv UND NICHT bereits durchgelaufen?
         if (!GameController.Instance.eventBombDone && GameController.Instance.eventBomb)
         {
 
-            if(!thiefsRun)
+            // Sind die Räuber bereits losgerannt?
+            if (!thiefsRun)
             {
                 // Verbrecher laufen los
                 foreach (GameObject p in thiefs)
@@ -76,6 +78,9 @@ public class EventBomb : MonoBehaviour
                 audioThiefsRun.Play();
             }
 
+            // Wenn die Räuber ihre Bomben platziert haben (Ausgelöst durch Trigger-Event)
+            // Dann können die Geißel losrennen. Außerdem startet der Countdown von 22,6 Sekunden.
+            // Nach Ablauf des Countdowns exlodieren die Bomben, wenn das Polizei-Event nicht vorher ausgelöst wurde.
             else if (!hostileRun && GameController.Instance.eventBombPlaced == 4)
             {
                 audioAlarm.Play();
@@ -83,12 +88,16 @@ public class EventBomb : MonoBehaviour
                 audioCountdown.Play();
                 Invoke("countdownOver", 22.6f);
 
+                // Die Geißeln rennen alle mit einem zufälligen Abstand voneinander los
                 hostileRun = true;
                 foreach (GameObject p in hostlies)
                 {
                     StartCoroutine(RunHostile(p, Random.Range(0.1f, 2.3f)));
                 }
             }
+
+            // Wenn die Polizei bei der Mall während des Countdowns angekommen ist, wird die Explosion verhindert.
+            // Das event wird beendet
             else if(GameController.Instance.eventPoliceAtMall)
             {
                 audioAlarm.Stop();
@@ -101,6 +110,8 @@ public class EventBomb : MonoBehaviour
 
     private void countdownOver()
     {
+        // Wenn der Countdown abgelaufen ist und die Polizei NICHT gerade bei der Mall angekommen ist, 
+        // explodiert die Bombe. Animation wird abgespielt, die Mall als Objekt entfernt und die zerstörte Mal als Objekt aktiviert.
         if(!GameController.Instance.eventPoliceAtMall) { 
             audioExplosion.Play();
             audioAlarm.Stop();
@@ -121,6 +132,7 @@ public class EventBomb : MonoBehaviour
         }
     }
 
+    // Die Geißeln rennen mit einem bestimmten Delay los, damit nicht alle auf einmal loslaufen.
     IEnumerator RunHostile(GameObject p, float delay)
     {
         yield return new WaitForSeconds(delay);

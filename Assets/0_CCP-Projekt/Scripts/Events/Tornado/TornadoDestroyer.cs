@@ -16,6 +16,8 @@ public class TornadoDestroyer : MonoBehaviour
     public void OnTriggerStay(Collider coll)
     {
         
+        // Wenn der Tornado in die Nähe von den markierten Objekten ankommt, wird dieses Event ausgelöst.
+        // Die Objekte fliegen in den Tornado rein und verschwinden danach.
         if (start && coll.gameObject.tag == "Tornado_Object")
         {
             PullOBJ = coll.gameObject;

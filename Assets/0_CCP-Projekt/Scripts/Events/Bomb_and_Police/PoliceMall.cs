@@ -6,6 +6,7 @@ public class PoliceMall : MonoBehaviour
 {
     public GameObject police;
 
+    // Event wird ausgelöst, wenn die Polizei in der Mall angekommen ist, um danach weitere Aktionen auszulösen.
     private void OnTriggerEnter(Collider other)
     {
         

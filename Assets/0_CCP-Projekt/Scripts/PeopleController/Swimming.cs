@@ -7,7 +7,7 @@ public class Swimming : MonoBehaviour
 
     private Animator animator;
 
-    // Use this for initialization
+    // Animation wird direkt aktiviert
     void Start()
     {
         this.animator = this.GetComponent<Animator>();
@@ -22,9 +22,4 @@ public class Swimming : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

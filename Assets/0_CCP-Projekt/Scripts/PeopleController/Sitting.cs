@@ -6,9 +6,11 @@ public class Sitting : MonoBehaviour
 {
 
     private Animator animator;
+
+    // Soll die Animation bereits aktiv sein?
     public bool sitting = true;
 
-    // Use this for initialization
+
     void Start()
     {
         this.animator = this.GetComponent<Animator>();
@@ -18,12 +20,14 @@ public class Sitting : MonoBehaviour
         }
     }
 
+    // Animation stopppen (Idle aktiv)
     public void stop()
     {
         sitting = false;
         this.animator.SetInteger("Animation_int", 0);
     }
 
+    // Animation starten
     public void start()
     {
         sitting = true;

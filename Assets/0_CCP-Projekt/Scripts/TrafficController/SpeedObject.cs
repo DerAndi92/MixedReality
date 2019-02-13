@@ -13,17 +13,20 @@ public class SpeedObject : MonoBehaviour {
 
     private float delta;
 
-	// Use this for initialization
+
 	void Start () {
         delta = 0;
 	}
 	
-	// Update is called once per frame
+
 	void Update () {
 
         delta += Time.deltaTime;
     }
 
+    // Wenn ein Auto über ein Speed Object fährt, wird geprüft, wie lang es her ist, 
+    // dass ein anderes Auto über die gleiche Plattform gefahren ist. Basierend auf dem Unterschied
+    // wird die Geschwindigkeit erhöht.
     private void OnTriggerEnter(Collider other)
     {
         Waypoints wp = other.GetComponent<Waypoints>();

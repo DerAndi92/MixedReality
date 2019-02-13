@@ -6,9 +6,10 @@ public class Gunner : MonoBehaviour
 {
 
     private Animator animator;
+
+    // Soll die Animation bereits aktiv sein?
     public bool gun = true;
 
-    // Use this for initialization
     void Start()
     {
         this.animator = this.GetComponent<Animator>();
@@ -18,12 +19,14 @@ public class Gunner : MonoBehaviour
         }
     }
 
+    // Animation stopppen (Idle aktiv)
     public void stop()
     {
         gun = false;
         this.animator.SetInteger("WeaponType_int", 0);
     }
 
+    // Animation starten
     public void start()
     {
         gun = true;
